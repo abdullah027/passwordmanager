@@ -31,11 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final panel2Controller = PanelController();
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
-  void sharedPref()async{
-    Future<SharedPreferences> pref =  SharedPreferences.getInstance();
-    final SharedPreferences prefs = await pref;
-    prefs.getString();
-  }
+  // void sharedPref()async{
+  //   Future<SharedPreferences> pref =  SharedPreferences.getInstance();
+  //   final SharedPreferences prefs = await pref;
+  //   prefs.getString();
+  // }
 
 
   int selIndex = 0;
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 10,
                       ),
                       CustomText(
-                        title: ,
+                        title: userProvider.user?.email ?? '',
                         textColor: AppColors.scaffoldColor,
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
