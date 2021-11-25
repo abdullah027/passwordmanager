@@ -76,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    print(LocalStorage().getUser());
 
     super.initState();
   }
@@ -139,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 10,
                       ),
                       CustomText(
-                        title: userProvider.user?.fullName == null?userProvider.user?.email:userProvider.user?.fullName??'Annisa Handayani',
+                        title:( userProvider.user?.fullName ?? userProvider.user?.email)??'Annisa Handayani',
                         textColor: AppColors.scaffoldColor,
                         fontWeight: FontWeight.w900,
                         fontSize: 16,

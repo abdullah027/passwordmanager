@@ -131,7 +131,7 @@ class AuthenticationService {
                     .then((DocumentSnapshot documentSnapshot) {
                   if (documentSnapshot.exists) {
                     userProvider.setUser(Users.fromDocument(documentSnapshot));
-                    LocalStorage().setUser(user: documentSnapshot.data().toString());
+                    //LocalStorage().setUser(user: documentSnapshot.data().toString());
                   }
                 }),
                 Fluttertoast.showToast(msg: AppStrings.successfullyUpdated)

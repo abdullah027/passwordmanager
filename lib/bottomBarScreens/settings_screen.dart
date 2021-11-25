@@ -75,7 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 40,
                   ),
                   title: CustomText(
-                    title: userProvider.user?.fullName == null?userProvider.user?.email:userProvider.user?.fullName??"Daniel Braun",
+                    title: (userProvider.user?.fullName ?? userProvider.user?.email)??"Daniel Braun",
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     textColor: AppColors.blueButtonColor,

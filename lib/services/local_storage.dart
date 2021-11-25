@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:passwordmanager/Models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,8 +36,21 @@ class LocalStorage {
     if (_sharedPreferences?.getString('User') == null) {
       return null;
     } else {
-      Users user = (_sharedPreferences!.getString('User') ?? '') as Users;
-      return user;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          var documentSnap = documentSnapshot;
+          var user = Users.fromDocument(documentSnap);
+          return user;
+
+
+        }
+      });
+
+
     }
   }
 
