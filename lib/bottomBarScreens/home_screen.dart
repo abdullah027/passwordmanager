@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:passwordmanager/Models/user_model.dart';
 import 'package:passwordmanager/add_account_screen.dart';
-import 'package:passwordmanager/authScreens/login_screen.dart';
+import 'package:passwordmanager/services/firebase_auth.dart';
+import 'package:passwordmanager/services/local_storage.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/bottom_navigation_bar.dart';
-import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
 import 'package:passwordmanager/sharedWidgets/drawer_tile.dart';
 import 'package:passwordmanager/sharedWidgets/my_category_card.dart';
@@ -13,10 +16,8 @@ import 'package:passwordmanager/utilis/asset_paths.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -37,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
   //   prefs.getString();
   // }
 
-
   int selIndex = 0;
   bool? isSelected = false;
 
@@ -52,7 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
       Icons.home,
       size: 18,
     ),
-    Icon(Icons.lock, size: 18,),
+    Icon(
+      Icons.lock,
+      size: 18,
+    ),
     Icon(Icons.star_rate_rounded, size: 20),
     Icon(Icons.settings, size: 18),
   ];
@@ -68,19 +71,20 @@ class _HomeScreenState extends State<HomeScreen> {
     Icon(Icons.account_balance_wallet_outlined, size: 18, color: Colors.white),
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
+
+
+
   @override
   void initState() {
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<UserProvider>(context,listen: false);
-
-
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return Scaffold(
-
         key: _key,
         drawer: SafeArea(child: _drawer()),
         extendBodyBehindAppBar: true,
@@ -135,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 10,
                       ),
                       CustomText(
-                        title: userProvider.user?.email ?? '',
+                        title: userProvider.user?.fullName == null?userProvider.user?.email:userProvider.user?.fullName??'Annisa Handayani',
                         textColor: AppColors.scaffoldColor,
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
@@ -298,6 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _drawer() {
+    var userProvider = Provider.of<UserProvider>(context,listen: true);
     return Drawer(
       child: Container(
         width: 40.w,
@@ -309,70 +314,76 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.borderColor2, width: 1),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.shadowColor.withOpacity(0.05),
-                            blurRadius: 54,
-                            offset: const Offset(10, 24),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border:
+                              Border.all(color: AppColors.borderColor2, width: 1),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.shadowColor.withOpacity(0.05),
+                              blurRadius: 54,
+                              offset: const Offset(10, 24),
+                            ),
+                          ]),
+                      child: ListTile(
+                        leading: Image.asset(
+                          AssetPaths.profile,
+                          height: 40,
+                        ),
+                        title: CustomText(
+                          title: userProvider.user?.fullName??"Annisa Handayani",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        subtitle: CustomText(
+                          title: userProvider.user?.email ?? 'annisahy@gmail.com' ,
+                          fontSize: 12,
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: AppColors.handleColor,
                           ),
-                        ]),
-                    child: ListTile(
-                      leading: Image.asset(
-                        AssetPaths.profile,
-                        height: 40,
-                      ),
-                      title: CustomText(
-                        title: "Annisa Handayani",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      subtitle: CustomText(
-                        title: "annisahy@gmail.com",
-                        fontSize: 12,
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: AppColors.handleColor,
                         ),
                       ),
                     ),
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: titles.length,
-                      itemBuilder: (context, index) {
-                        return  DrawerTile(
-                          icon: drawerIcons[index],
-                          title: titles[index],
-                          index: index,
-                          isSelected: selIndex == index ? true : false,
-                          returnIndex: (catchIndex) {
-                            setState(() {
-                              selIndex = catchIndex!;
-                            });
-                          },
-                        );
-                      }),
-                ],
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: titles.length,
+                        itemBuilder: (context, index) {
+                          return DrawerTile(
+                            icon: drawerIcons[index],
+                            title: titles[index],
+                            index: index,
+                            isSelected: selIndex == index ? true : false,
+                            returnIndex: (catchIndex) {
+                              setState(() {
+                                selIndex = catchIndex!;
+                              });
+                            },
+                          );
+                        }),
+                  ],
+                ),
               ),
             ),
             Expanded(
               flex: 0,
               child: GestureDetector(
                 onTap: () {
-                  AppNavigation.navigateReplacement(context, const LogInScreen());
+                  AuthenticationService(FirebaseAuth.instance).signOut(context);
                 },
                 child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: BoxDecoration(
                       color: AppColors.scaffoldColor,
                       borderRadius: BorderRadius.circular(10),
@@ -389,7 +400,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListTile(
                     leading: SizedBox(
                         height: 100.h,
-                        child: const Icon(Icons.logout,color: AppColors.blueButtonColor,size: 20,)),
+                        child: const Icon(
+                          Icons.logout,
+                          color: AppColors.blueButtonColor,
+                          size: 20,
+                        )),
                     title: CustomText(
                       title: AppStrings.logout,
                       textColor: AppColors.blueButtonColor,
@@ -400,7 +415,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             )
-
           ],
         ),
       ),

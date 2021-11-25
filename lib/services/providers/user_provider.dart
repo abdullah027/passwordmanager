@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:passwordmanager/Models/user_model.dart';
 
 class UserProvider extends ChangeNotifier {
-  User? _user;
+  Users? _user;
 
-  User? get user => _user;
+  Users? get user => _user;
 
-  void setUser(User? user) {
+  void setUser(Users? user) {
     _user = user;
     notifyListeners();
   }

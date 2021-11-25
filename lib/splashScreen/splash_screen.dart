@@ -24,15 +24,15 @@ class _SplashScreenState extends State<SplashScreen> {
    _splashTimer() async {
      var userProvider = Provider.of<UserProvider>(context,listen: false);
      LocalStorage localStorage = LocalStorage();
-     print(localStorage.getUser()?.uid);
+     //print(localStorage.getUser()?.uid);
     return Timer(const Duration(seconds: 2), () {
-      if(userProvider.user?.uid != null)
-        {
-          AppNavigation.navigateReplacement(context, const HomeScreen());
-        }
-      else{
+      // if(userProvider.user?.uid != null)
+      //   {
+      //     AppNavigation.navigateReplacement(context, const HomeScreen());
+      //   }
+      // else{
         AppNavigation.navigateReplacement(context, const OnBoardingScreen());
-      }
+     // }
 
     });
   }

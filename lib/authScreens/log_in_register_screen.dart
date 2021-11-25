@@ -72,7 +72,7 @@ class _LogInRegisterScreenState extends State<LogInRegisterScreen> {
   Widget _logInButton() {
     return CustomWhiteButton(
       onPressed: () {
-        AppNavigation.navigateTo(context, const LogInScreen());
+        AppNavigation.navigateReplacement(context, const LogInScreen());
       },
       text: AppStrings.logIn,
       textColor: AppColors.logInTextColor,
@@ -84,7 +84,7 @@ class _LogInRegisterScreenState extends State<LogInRegisterScreen> {
       width: 80.w,
       text: AppStrings.register,
       onPressed: () {
-        AppNavigation.navigateTo(context, const SignUpScreen());
+        AppNavigation.navigateReplacement(context, const SignUpScreen());
       },
 
     );

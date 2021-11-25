@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:passwordmanager/Models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
@@ -30,11 +31,11 @@ class LocalStorage {
     _sharedPreferences?.setString('User', user ?? '');
   }
 
-  User? getUser() {
+  Users? getUser() {
     if (_sharedPreferences?.getString('User') == null) {
       return null;
     } else {
-      User user = (_sharedPreferences!.getString('User') ?? '') as User;
+      Users user = (_sharedPreferences!.getString('User') ?? '') as Users;
       return user;
     }
   }

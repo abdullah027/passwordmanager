@@ -28,6 +28,12 @@ class _LogInScreenState extends State<LogInScreen> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
+  void initState() {
+    emailController.text = 'ron@mail.com';
+    passwordController.text = 'ronweisely';
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -177,10 +183,18 @@ class _LogInScreenState extends State<LogInScreen> {
               const SizedBox(
                 height: 20,
               ),
-              CustomText(
-                title: AppStrings.skipText,
-                fontWeight: FontWeight.w900,
-                fontSize: 12,
+              GestureDetector(
+                onTap: (){
+                  AppNavigation.navigateTo(context, const HomeScreen());
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                  child: CustomText(
+                    title: AppStrings.skipText,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 12,
+                  ),
+                ),
               ),
             ],
           ),

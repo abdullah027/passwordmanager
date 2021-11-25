@@ -26,9 +26,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider<AuthenticationService>(create: (_) =>AuthenticationService(FirebaseAuth.instance)),
-        StreamProvider(create: (context){
-          AuthenticationService(FirebaseAuth.instance);
-        }, initialData: null)
       ],
       child: Sizer(
         builder: (context, orientation,type) {

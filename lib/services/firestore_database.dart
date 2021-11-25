@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
-  final String uid;
+  final String? uid;
 
   DatabaseService(this.uid);
 
@@ -16,9 +19,9 @@ class DatabaseService {
     }, SetOptions(merge: true));
   }
 
-  Future updateUserData(String username, String email, String phone) async {
-    return await userCollection.doc(uid).update({
-      "username": username,
+  Future updateUserData(String fullName, String email, String phone) async {
+    return await userCollection.doc(FirebaseAuth.instance.currentUser?.uid).update({
+      "fullname": fullName,
       "email": email,
       "phone": phone,
     });

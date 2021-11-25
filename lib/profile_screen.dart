@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:passwordmanager/services/firebase_auth.dart';
+import 'package:passwordmanager/services/firestore_database.dart';
+import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_clipper.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
@@ -7,6 +11,7 @@ import 'package:passwordmanager/sharedWidgets/custom_text_field.dart';
 import 'package:passwordmanager/utilis/asset_paths.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -20,9 +25,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
   bool _switchValue = false;
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       body: Stack(
         children: [
@@ -144,7 +154,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 10,
                           ),
                           CustomTextField(
-                            hintText: "Daniel Braun",
+                            controller: fullNameController,
+                            hintText:
+                                userProvider.user?.fullName ?? "Daniel Braun",
                             fillColor: AppColors.scaffoldColor,
                             enableBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -164,7 +176,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 10,
                           ),
                           CustomTextField(
-                            hintText: "danielbraun691@gmail.com",
+                            controller: emailController,
+                            hintText: userProvider.user?.email ??
+                                "danielbraun691@gmail.com",
                             fillColor: AppColors.scaffoldColor,
                             enableBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -184,7 +198,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 10,
                           ),
                           CustomTextField(
-                            hintText: "+1 343 454 564",
+                            controller: phoneController,
+                            hintText:
+                                userProvider.user?.phone ?? "+1 343 454 564",
                             fillColor: AppColors.scaffoldColor,
                             enableBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -195,7 +211,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 20,
                           ),
                           CustomBlueButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              AuthenticationService(FirebaseAuth.instance)
+                                  .updateUser(
+                                      fullNameController.text.isEmpty ?userProvider.user?.fullName:fullNameController.text,
+                                      emailController.text.isEmpty?userProvider.user?.email:emailController.text,
+                                      phoneController.text.isEmpty?userProvider.user?.phone:phoneController.text,
+                                      context);
+                            },
                             width: 100.w,
                             borderRadius: BorderRadius.circular(10),
                             text: AppStrings.saveChanges,

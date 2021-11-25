@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/profile_screen.dart';
+import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/bottom_navigation_bar.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
@@ -7,6 +9,7 @@ import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/asset_paths.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -19,6 +22,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context,listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -30,7 +34,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         leading: IconButton(
           onPressed: () {
-            AppNavigation.navigatorPop(context);
+            AppNavigation.navigateTo(context, const HomeScreen());
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -71,13 +75,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 40,
                   ),
                   title: CustomText(
-                    title: "Daniel Braun",
+                    title: userProvider.user?.fullName == null?userProvider.user?.email:userProvider.user?.fullName??"Daniel Braun",
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     textColor: AppColors.blueButtonColor,
                   ),
                   subtitle: CustomText(
-                    title: "danielbraun691@gmail.com",
+                    title: userProvider.user?.email??"danielbraun691@gmail.com",
                     fontSize: 12,
                   ),
                   trailing: CustomBlueButton(

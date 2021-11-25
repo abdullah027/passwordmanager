@@ -65,6 +65,7 @@ class AppStrings{
   static const phoneNumber = "Phone Number";
   static const app = "App";
   static const changeProfilePicture = "Change Profile Picture";
+  static const successfullyUpdated = "Successfully Updated";
 
 
   static const fieldMissing = "One of the field is empty";
