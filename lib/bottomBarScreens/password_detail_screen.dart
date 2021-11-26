@@ -7,6 +7,8 @@ import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+import '../add_account_screen.dart';
+
 class PasswordDetailScreen extends StatefulWidget {
   const PasswordDetailScreen({Key? key}) : super(key: key);
 
@@ -20,7 +22,11 @@ class _PasswordDetailScreenState extends State<PasswordDetailScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            AppNavigation.navigateTo(context, const AddAccountScreen());
+          });
+        },
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: const BottomNavBar(

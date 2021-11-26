@@ -12,6 +12,8 @@ import 'package:sizer/sizer.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:password_strength/password_strength.dart';
 
+import '../add_account_screen.dart';
+
 enum _PassWordType { normal, strong, veryStrong }
 
 class GeneratePasswordScreen extends StatefulWidget {
@@ -38,7 +40,11 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            AppNavigation.navigateTo(context, const AddAccountScreen());
+          });
+        },
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: const BottomNavBar(

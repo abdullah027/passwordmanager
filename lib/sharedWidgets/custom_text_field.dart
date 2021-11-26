@@ -10,10 +10,12 @@ class CustomTextField extends StatefulWidget {
   final TextAlign? textAlign;
   final bool? obscureText,enabled;
   final Color? fillColor;
+  final Function()? onPressed;
   final InputBorder? enableBorder;
   final Icon? prefixIcon;
+  final Widget? suffixIcon;
   final BorderSide? borderSide;
-  const CustomTextField({Key? key,this.hintText,this.controller,this.inputType,this.textAlign,this.obscureText,this.fillColor,this.enableBorder,this.prefixIcon,this.enabled,this.borderSide}) : super(key: key);
+  const CustomTextField({Key? key,this.hintText,this.controller,this.inputType,this.textAlign,this.obscureText,this.fillColor,this.enableBorder,this.prefixIcon,this.enabled,this.borderSide,this.suffixIcon,this.onPressed}) : super(key: key);
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -22,27 +24,33 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      enabled: widget.enabled,
-      textAlignVertical: TextAlignVertical.center,
-      controller: widget.controller,
-      textAlign: widget.textAlign??TextAlign.justify,
-      decoration: InputDecoration(
-        prefixIcon: widget.prefixIcon,
-        enabledBorder: widget.enableBorder,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: widget.borderSide??const BorderSide(),
-        ),
+    return MediaQuery(
+      data: const MediaQueryData(textScaleFactor: 1),
+      child: TextField(
+        enabled: widget.enabled,
+        textAlignVertical: TextAlignVertical.center,
+        controller: widget.controller,
+        textAlign: widget.textAlign??TextAlign.justify,
+        decoration: InputDecoration(
+          prefixIcon: widget.prefixIcon,
+          suffixIcon: IconButton(
+            onPressed: widget.onPressed,
+              icon: widget.suffixIcon??Container()),
+          enabledBorder: widget.enableBorder,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: widget.borderSide??const BorderSide(),
+          ),
 
-        filled: true,
-        fillColor: widget.fillColor??AppColors.fillColor,
-        hintStyle: TextStyle(
-            color: Colors.black.withOpacity(0.55), fontSize: 10),
-        hintText: widget.hintText,
+          filled: true,
+          fillColor: widget.fillColor??AppColors.fillColor,
+          hintStyle: TextStyle(
+              color: Colors.black.withOpacity(0.55), fontSize: 10),
+          hintText: widget.hintText,
+        ),
+        obscureText: widget.obscureText??false,
+        keyboardType: widget.inputType,
       ),
-      obscureText: widget.obscureText??false,
-      keyboardType: widget.inputType,
     );
   }
 }

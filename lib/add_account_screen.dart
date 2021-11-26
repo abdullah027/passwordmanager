@@ -30,6 +30,8 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
     Icon(Icons.account_balance_wallet_outlined, size: 18, color: Colors.white),
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
+  int? selIndex;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,6 +189,12 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                                   text: categories[index],
                                   icon: icons[index],
                                   index: index,
+                                  isSelected: index == selIndex?true:false,
+                                  returnIndex: (catchIndex){
+                                    setState(() {
+                                      selIndex = catchIndex;
+                                    });
+                                    },
                                 ),
                                 const SizedBox(
                                   width: 20,

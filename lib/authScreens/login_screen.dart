@@ -26,6 +26,7 @@ class _LogInScreenState extends State<LogInScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  bool isSelected = true;
 
   @override
   void initState() {
@@ -80,7 +81,13 @@ class _LogInScreenState extends State<LogInScreen> {
               CustomTextField(
                 controller: passwordController,
                 hintText: AppStrings.password,
-                obscureText: true,
+                obscureText: isSelected,
+                suffixIcon: isSelected == false?const Icon(CupertinoIcons.eye):const Icon(CupertinoIcons.eye_slash),
+                onPressed: (){
+                  setState(() {
+                    isSelected = !isSelected;
+                  });
+                },
                 textAlign: TextAlign.justify,
                 inputType: TextInputType.visiblePassword,
               ),

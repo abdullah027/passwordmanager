@@ -12,6 +12,8 @@ import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../add_account_screen.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -45,7 +47,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            AppNavigation.navigateTo(context, const AddAccountScreen());
+          });
+        },
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: const BottomNavBar(
