@@ -45,8 +45,6 @@ class LocalStorage {
           var documentSnap = documentSnapshot;
           var user = Users.fromDocument(documentSnap);
           return user;
-
-
         }
       });
 

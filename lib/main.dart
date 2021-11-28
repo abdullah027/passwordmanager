@@ -56,28 +56,7 @@ class _MyAppState extends State<MyApp> {
                 elevation: 0, backgroundColor: AppColors.scaffoldColor),
           ),
           themeMode: _isDark == true ? ThemeMode.dark : ThemeMode.light,
-          home: FutureBuilder<User?>(
-            future: AuthenticationService(firebaseAuth).getCurrentUser(),
-            builder: (context, AsyncSnapshot<User?> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                default:
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    if (snapshot.data == null) {
-                      return const LogInRegisterScreen();
-                    } else {
-                      return const HomeScreen();
-                    }
-                  }
-              }
-            },
-          ),
+          home: const SplashScreen(),
         );
       }),
     );

@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:passwordmanager/Models/user_model.dart';
+import 'package:passwordmanager/authScreens/log_in_register_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/onBoardingScreens/on_boarding_screen.dart';
+import 'package:passwordmanager/services/firebase_auth.dart';
 import 'package:passwordmanager/services/local_storage.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
@@ -20,22 +24,29 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-   _splashTimer() async {
-     var userProvider = Provider.of<UserProvider>(context,listen: false);
-     LocalStorage localStorage = LocalStorage();
-     //print(localStorage.getUser()?.uid);
-    return Timer(const Duration(seconds: 2), () {
-      // if(userProvider.user?.uid != null)
-      //   {
-      //     AppNavigation.navigateReplacement(context, const HomeScreen());
-      //   }
-      // else{
-        AppNavigation.navigateReplacement(context, const OnBoardingScreen());
-     // }
-
+  _splashTimer() async {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    var user =
+        await AuthenticationService(FirebaseAuth.instance).getCurrentUser();
+    //print(localStorage.getUser()?.uid);
+    return Timer(const Duration(seconds: 2), () async {
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            userProvider.setUser(Users.fromDocument(documentSnapshot));
+            AppNavigation.navigateReplacement(context, const HomeScreen());
+          }
+        });
+      } else {
+        AppNavigation.navigateReplacement(context, const LogInRegisterScreen());
+      }
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -55,7 +66,9 @@ class _SplashScreenState extends State<SplashScreen> {
             AssetPaths.logo,
             height: 100,
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -64,14 +77,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontSize: 16,
                 fontWeight: FontWeight.w900,
               ),
-
             ],
           ),
-
         ],
       ),
     );
   }
 }
-
-
