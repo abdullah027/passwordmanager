@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
-import 'package:passwordmanager/profile_screen.dart';
+import 'package:passwordmanager/bottomBarScreens/SettingsScreens/profile_screen.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/bottom_navigation_bar.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';

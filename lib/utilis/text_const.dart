@@ -22,13 +22,15 @@ class AppStrings{
   static const welcomeText = "Welcome in Reganam. Lets save passwords for remembrance.";
   static const welcomeBack = "Welcome back";
   static const newPasswordText = "Reset your password for recovery & login to your account.";
-  static const welcomeText2 = "Welcome in app name. Lets generate new strong passwords.";
+  static const welcomeText2 = "Welcome in Reganam. Lets generate new strong passwords.";
   static const emailInfo = "Enter your email address to recover your account";
   static const usernameText = "Enter username";
   static const passwordText = "Enter password";
   static const forgotPasswordText = "Forgot password?";
   static const verifyText = "Verify your email";
   static const verifyDescText = "Please check your email to enter 4 digits code to continue.";
+  static const verifyEmailText = "An email has been sent to ";
+  static const verifyEmailText2 = ", please verify.";
   static const noAccountText = "Don't have an account?";
   static const skipText = "Skip For Now";
   static const orText = "OR";

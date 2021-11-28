@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/Models/user_model.dart';
 import 'package:passwordmanager/authScreens/log_in_register_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
@@ -28,9 +29,10 @@ class _SplashScreenState extends State<SplashScreen> {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     var user =
         await AuthenticationService(FirebaseAuth.instance).getCurrentUser();
+    print(user);
     //print(localStorage.getUser()?.uid);
     return Timer(const Duration(seconds: 2), () async {
-      if (user != null) {
+      if (user != null && user.emailVerified) {
         await FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
@@ -41,7 +43,11 @@ class _SplashScreenState extends State<SplashScreen> {
             AppNavigation.navigateReplacement(context, const HomeScreen());
           }
         });
-      } else {
+      }
+      else if(user == null || !user.emailVerified){
+        AppNavigation.navigateReplacement(context, const LogInRegisterScreen());
+      }
+      else {
         AppNavigation.navigateReplacement(context, const LogInRegisterScreen());
       }
     });

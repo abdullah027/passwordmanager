@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:passwordmanager/Models/user_model.dart';
+import 'package:passwordmanager/authScreens/verification_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/add_account_screen.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
 import 'package:passwordmanager/services/local_storage.dart';
@@ -31,6 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final panelController = PanelController();
   final panel2Controller = PanelController();
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final user = FirebaseAuth.instance.currentUser;
+
 
   // void sharedPref()async{
   //   Future<SharedPreferences> pref =  SharedPreferences.getInstance();
@@ -76,8 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    print(LocalStorage().getUser());
-
     super.initState();
   }
 
@@ -102,180 +103,217 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: const BottomNavBar(
           index: 0,
         ),
-        body: SlidingUpPanel(
-            controller: panelController,
-            minHeight: 35.h,
-            maxHeight: 70.h,
-            borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-            body: SlidingUpPanel(
-              controller: panel2Controller,
-              minHeight: 70.h,
-              maxHeight: 80.h,
-              borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-              body: Container(
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                  image: AssetImage(AssetPaths.ellipse20),
-                  alignment: Alignment.topCenter,
-                )),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      _customAppBar(),
-                      CustomText(
-                        title: AppStrings.welcomeBack,
-                        textColor: AppColors.scaffoldColor,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 12,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      CustomText(
-                        title:( userProvider.user?.fullName ?? userProvider.user?.email)??'Annisa Handayani',
-                        textColor: AppColors.scaffoldColor,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 16,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
+        body: Stack(
+          children: [
+            SlidingUpPanel(
+                controller: panelController,
+                minHeight: 35.h,
+                maxHeight: 70.h,
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                body: SlidingUpPanel(
+                  controller: panel2Controller,
+                  minHeight: 70.h,
+                  maxHeight: 80.h,
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                  body: Container(
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                      image: AssetImage(AssetPaths.ellipse20),
+                      alignment: Alignment.topCenter,
+                    )),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _searchField(),
                           const SizedBox(
-                            width: 10,
+                            height: 10,
                           ),
-                          _filterButton(),
+                          _customAppBar(),
+                          CustomText(
+                            title: AppStrings.welcomeBack,
+                            textColor: AppColors.scaffoldColor,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 12,
+                          ),
                           const SizedBox(
-                            width: 10,
+                            height: 10,
+                          ),
+                          CustomText(
+                            title:( userProvider.user?.fullName ?? userProvider.user?.email)??'Annisa Handayani',
+                            textColor: AppColors.scaffoldColor,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              _searchField(),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              _filterButton(),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
+                  ),
+                  panelBuilder: (controller) => Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          title: AppStrings.myCategoryAccount,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                panel2Controller.isPanelOpen
+                                    ? panel2Controller.close()
+                                    : panel2Controller.open();
+                              });
+                            },
+                            child: Center(
+                                child: Container(
+                              height: 5,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  color: AppColors.handleColor,
+                                  borderRadius: BorderRadius.circular(20)),
+                            ))),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                          child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: icons.length,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  children: [
+                                    MyCategoryCard(
+                                      text: categories[index],
+                                      icon: icons[index],
+                                      index: index,
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              panelBuilder: (controller) => Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      title: AppStrings.myCategoryAccount,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w900,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            panel2Controller.isPanelOpen
-                                ? panel2Controller.close()
-                                : panel2Controller.open();
-                          });
-                        },
-                        child: Center(
-                            child: Container(
-                          height: 5,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              color: AppColors.handleColor,
-                              borderRadius: BorderRadius.circular(20)),
-                        ))),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                      child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: icons.length,
-                          itemBuilder: (context, index) {
-                            return Row(
-                              children: [
-                                MyCategoryCard(
-                                  text: categories[index],
-                                  icon: icons[index],
-                                  index: index,
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                              ],
-                            );
-                          }),
-                    ),
-                  ],
+                panelBuilder: (controller) => Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            title: "Latest Account",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  panelController.isPanelOpen
+                                      ? panelController.close()
+                                      : panelController.open();
+                                });
+                              },
+                              child: Center(
+                                  child: Container(
+                                height: 5,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    color: AppColors.handleColor,
+                                    borderRadius: BorderRadius.circular(20)),
+                              ))),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: 10,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      _listTile(),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    )),
+            user!.emailVerified?Container():Positioned(
+              bottom: 0,
+              child: GestureDetector(
+                onTap: (){
+                  AppNavigation.navigateTo(context, const VerificationScreen());
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  color: AppColors.blueButtonColor,
+                  height: 10.h,
+                  width: 100.w,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10,),
+                      CustomText(
+                        title: AppStrings.verifyText,
+                        textColor: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 5,),
+                      CustomText(
+                        title: "Your email is not verified, tap here and verify your email.",
+                        textColor: Colors.white,
+                        fontSize: 12,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            panelBuilder: (controller) => Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        title: "Latest Account",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              panelController.isPanelOpen
-                                  ? panelController.close()
-                                  : panelController.open();
-                            });
-                          },
-                          child: Center(
-                              child: Container(
-                            height: 5,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                color: AppColors.handleColor,
-                                borderRadius: BorderRadius.circular(20)),
-                          ))),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  _listTile(),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
-                              );
-                            }),
-                      ),
-                    ],
-                  ),
-                )));
+          ],
+        ));
   }
 
   Widget _customAppBar() {
