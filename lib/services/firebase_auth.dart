@@ -25,7 +25,7 @@ class AuthenticationService {
 
   //Stream<User?> get authStateChanges => firebaseAuth.idTokenChanges();
 
-  Future getCurrentUser() async {
+  Future<User?> getCurrentUser() async {
     return firebaseAuth.currentUser;
   }
 
