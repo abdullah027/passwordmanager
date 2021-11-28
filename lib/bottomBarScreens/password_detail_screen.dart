@@ -7,7 +7,7 @@ import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
-import '../add_account_screen.dart';
+import 'add_account_screen.dart';
 
 class PasswordDetailScreen extends StatefulWidget {
   const PasswordDetailScreen({Key? key}) : super(key: key);

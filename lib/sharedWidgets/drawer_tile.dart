@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:passwordmanager/add_account_screen.dart';
+import 'package:passwordmanager/bottomBarScreens/add_account_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/generate_password_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/settings_screen.dart';

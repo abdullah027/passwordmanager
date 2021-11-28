@@ -12,7 +12,7 @@ import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../add_account_screen.dart';
+import 'add_account_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);

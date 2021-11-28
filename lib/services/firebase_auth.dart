@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/Models/user_model.dart';
 import 'package:passwordmanager/authScreens/login_screen.dart';
+import 'package:passwordmanager/authScreens/verification_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/services/local_storage.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
@@ -74,7 +75,7 @@ class AuthenticationService {
         });
         Fluttertoast.showToast(
             msg: "Signed up Successfully", gravity: ToastGravity.TOP);
-        AppNavigation.navigateReplacement(context, const HomeScreen());
+        AppNavigation.navigateReplacement(context, const VerificationScreen());
       });
     } on FirebaseException catch (e) {
       Fluttertoast.showToast(

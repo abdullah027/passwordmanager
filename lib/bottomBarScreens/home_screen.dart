@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:passwordmanager/Models/user_model.dart';
-import 'package:passwordmanager/add_account_screen.dart';
+import 'package:passwordmanager/bottomBarScreens/add_account_screen.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
 import 'package:passwordmanager/services/local_storage.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
