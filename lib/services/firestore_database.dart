@@ -20,7 +20,9 @@ class DatabaseService {
   }
 
   Future updateUserData(String fullName, String email, String phone) async {
-    return await userCollection.doc(FirebaseAuth.instance.currentUser?.uid).update({
+    return await userCollection
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .update({
       "fullname": fullName,
       "email": email,
       "phone": phone,
@@ -29,5 +31,26 @@ class DatabaseService {
 
   Future deleteUserData() async {
     await userCollection.doc(uid).delete();
+  }
+
+  Future addAccountData({
+    String? icon,
+    String? domain,
+    String? email,
+    String? password,
+    String? category,
+  }) async {
+    final response =
+        await userCollection.doc('users/$uid').collection('Accounts').add(
+      {
+        "icon": icon,
+        "domain": domain,
+        "email": email,
+        "password": password,
+        "category": category,
+      },
+    );
+
+    return response.id;
   }
 }

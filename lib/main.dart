@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:passwordmanager/Models/user_model.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
+import 'package:passwordmanager/services/providers/account_provider.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/splashScreen/splash_screen.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
@@ -35,7 +36,11 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider<AuthenticationService>(
-            create: (_) => AuthenticationService(FirebaseAuth.instance)),
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AccountsProvider(),
+        ),
       ],
       child: Sizer(builder: (context, orientation, type) {
         return MaterialApp(

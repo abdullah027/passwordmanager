@@ -7,9 +7,11 @@ import 'package:passwordmanager/sharedWidgets/my_category_card.dart';
 import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../services/providers/account_provider.dart';
 
 class AddAccountScreen extends StatefulWidget {
   const AddAccountScreen({Key? key}) : super(key: key);
@@ -20,12 +22,8 @@ class AddAccountScreen extends StatefulWidget {
 
 class _AddAccountScreenState extends State<AddAccountScreen> {
   List<Icon> icons = const [
-    Icon(
-      Icons.wifi_tethering,
-      size: 18,
-      color: Colors.white,
-    ),
-    Icon(CupertinoIcons.globe, size: 18, color: Colors.white),
+    Icon(Icons.wifi_tethering, size: 18, color: Colors.white),
+    Icon(Icons.language, size: 18, color: Colors.white),
     Icon(Icons.school_outlined, size: 18, color: Colors.white),
     Icon(Icons.account_balance_wallet_outlined, size: 18, color: Colors.white),
   ];
@@ -189,12 +187,12 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                                   text: categories[index],
                                   icon: icons[index],
                                   index: index,
-                                  isSelected: index == selIndex?true:false,
-                                  returnIndex: (catchIndex){
+                                  isSelected: index == selIndex ? true : false,
+                                  returnIndex: (catchIndex) {
                                     setState(() {
                                       selIndex = catchIndex;
                                     });
-                                    },
+                                  },
                                 ),
                                 const SizedBox(
                                   width: 20,
@@ -228,7 +226,11 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                     text: AppStrings.saveAccount,
                     borderRadius: BorderRadius.circular(10),
                     width: 100.w,
-                    onPressed: () {},
+                    onPressed: () {
+                      // final accountToSet = Account(id: , icon: , domain: , category: , email: , password: );
+                      // Provider.of<AccountsProvider>(context,listen: false).addAccount(account: accountToSet, uid: '');
+                      // AppNavigation.navigatorPop(context);
+                    },
                   ),
                 ],
               ),
