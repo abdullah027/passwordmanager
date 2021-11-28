@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
-import 'package:passwordmanager/services/firebase_auth.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
 import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
@@ -19,15 +18,11 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   final auth = FirebaseAuth.instance;
   User? user;
-  Timer? timer;
 
   @override
   void initState() {
     user = auth.currentUser;
     sendEmailVerification();
-    timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-      checkEmailVerified();
-    });
     super.initState();
   }
 
@@ -67,9 +62,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   Future<void> sendEmailVerification() async {
     try {
-      user?.sendEmailVerification();
-      AppNavigation.navigatorPop(context);
-    } on FirebaseException catch (e) {
+      setState(() {
+        user?.sendEmailVerification().whenComplete(() {
+          Fluttertoast.showToast(msg: "Email has been sent");
+          checkEmailVerified();
+        });
+      });
+    } on Exception catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
   }
@@ -77,7 +76,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Future<void> checkEmailVerified() async {
     user = auth.currentUser;
     await user?.reload();
-    timer?.cancel();
     if (user!.emailVerified) {
       AppNavigation.navigateReplacement(context, const HomeScreen());
     }
@@ -85,7 +83,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   void dispose() {
-    timer?.cancel();
     super.dispose();
   }
 }

@@ -1,12 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:passwordmanager/Models/user_model.dart';
 import 'package:passwordmanager/authScreens/verification_screen.dart';
+import 'package:passwordmanager/bottomBarScreens/SettingsScreens/profile_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/add_account_screen.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
-import 'package:passwordmanager/services/local_storage.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/bottom_navigation_bar.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
@@ -33,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final panel2Controller = PanelController();
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final user = FirebaseAuth.instance.currentUser;
-
 
   // void sharedPref()async{
   //   Future<SharedPreferences> pref =  SharedPreferences.getInstance();
@@ -75,8 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
 
-
-
   @override
   void initState() {
     super.initState();
@@ -110,13 +105,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 minHeight: 35.h,
                 maxHeight: 70.h,
                 borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20)),
                 body: SlidingUpPanel(
                   controller: panel2Controller,
                   minHeight: 70.h,
                   maxHeight: 80.h,
                   borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20)),
                   body: Container(
                     decoration: const BoxDecoration(
                         image: DecorationImage(
@@ -124,8 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       alignment: Alignment.topCenter,
                     )),
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -143,7 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 10,
                           ),
                           CustomText(
-                            title:( userProvider.user?.fullName ?? userProvider.user?.email)??'Annisa Handayani',
+                            title: (userProvider.user?.fullName ??
+                                    userProvider.user?.email) ??
+                                'Annisa Handayani',
                             textColor: AppColors.scaffoldColor,
                             fontWeight: FontWeight.w900,
                             fontSize: 16,
@@ -168,8 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   panelBuilder: (controller) => Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -227,8 +226,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 panelBuilder: (controller) => Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -279,39 +278,47 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     )),
-            user!.emailVerified?Container():Positioned(
-              bottom: 0,
-              child: GestureDetector(
-                onTap: (){
-                  AppNavigation.navigateTo(context, const VerificationScreen());
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  color: AppColors.blueButtonColor,
-                  height: 10.h,
-                  width: 100.w,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10,),
-                      CustomText(
-                        title: AppStrings.verifyText,
-                        textColor: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        textAlign: TextAlign.center,
+            user!.emailVerified
+                ? Container()
+                : Positioned(
+                    bottom: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        AppNavigation.navigateTo(
+                            context, const VerificationScreen());
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        color: AppColors.blueButtonColor,
+                        height: 10.h,
+                        width: 100.w,
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            CustomText(
+                              title: AppStrings.verifyText,
+                              textColor: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            CustomText(
+                              title:
+                                  "Your email is not verified, tap here and verify your email.",
+                              textColor: Colors.white,
+                              fontSize: 12,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 5,),
-                      CustomText(
-                        title: "Your email is not verified, tap here and verify your email.",
-                        textColor: Colors.white,
-                        fontSize: 12,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
           ],
         ));
   }
@@ -330,10 +337,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.menu,
                 color: AppColors.scaffoldColor,
               )),
-          const CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.black,
-            foregroundImage: AssetImage(AssetPaths.profile),
+          GestureDetector(
+            onTap: () {
+              AppNavigation.navigateTo(context, const ProfileScreen());
+            },
+            child: const CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.black,
+              foregroundImage: AssetImage(AssetPaths.profile),
+            ),
           ),
         ],
       ),
@@ -341,7 +353,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _drawer() {
-    var userProvider = Provider.of<UserProvider>(context,listen: true);
+    var userProvider = Provider.of<UserProvider>(context, listen: true);
     return Drawer(
       child: Container(
         width: 40.w,
@@ -362,8 +374,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           vertical: 10, horizontal: 10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          border:
-                              Border.all(color: AppColors.borderColor2, width: 1),
+                          border: Border.all(
+                              color: AppColors.borderColor2, width: 1),
                           boxShadow: [
                             BoxShadow(
                               color: AppColors.shadowColor.withOpacity(0.05),
@@ -377,12 +389,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 40,
                         ),
                         title: CustomText(
-                          title: userProvider.user?.fullName??"Annisa Handayani",
+                          title:
+                              userProvider.user?.fullName ?? "Annisa Handayani",
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                         subtitle: CustomText(
-                          title: userProvider.user?.email ?? 'annisahy@gmail.com' ,
+                          title:
+                              userProvider.user?.email ?? 'annisahy@gmail.com',
                           fontSize: 12,
                         ),
                         trailing: IconButton(
