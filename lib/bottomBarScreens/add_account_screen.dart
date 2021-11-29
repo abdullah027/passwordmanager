@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text_field.dart';
@@ -21,6 +25,12 @@ class AddAccountScreen extends StatefulWidget {
 }
 
 class _AddAccountScreenState extends State<AddAccountScreen> {
+  TextEditingController domainController = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String? selectedCategory,iconString;
+
   List<Icon> icons = const [
     Icon(Icons.wifi_tethering, size: 18, color: Colors.white),
     Icon(Icons.language, size: 18, color: Colors.white),
@@ -30,8 +40,17 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   List categories = ["Social Media", "Google", "Study", "Wallet"];
   int? selIndex;
 
+
+  @override
+  void initState() {
+    print(FirebaseAuth.instance.currentUser?.uid);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -72,7 +91,8 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                           color: AppColors.blueButtonColor,
                         ),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                          },
                           icon: const FaIcon(
                             FontAwesomeIcons.image,
                             color: AppColors.blueButtonColor,
@@ -96,6 +116,31 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       height: 20,
                     ),
                     CustomText(
+                      title: AppStrings.fullName,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 12,
+                      textColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextField(
+                      controller: fullNameController,
+                      hintText: "Norton Film",
+                      fillColor: AppColors.scaffoldColor,
+                      prefixIcon: const Icon(
+                        CupertinoIcons.person,
+                        size: 20,
+                      ),
+                      enableBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: AppColors.borderColor3, width: 1)),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
                       title: AppStrings.website,
                       fontWeight: FontWeight.w900,
                       fontSize: 12,
@@ -105,6 +150,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       height: 10,
                     ),
                     CustomTextField(
+                      controller: domainController,
                       hintText: "www.sitegoeshere.co.id",
                       fillColor: AppColors.scaffoldColor,
                       prefixIcon: const Icon(
@@ -129,6 +175,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       height: 10,
                     ),
                     CustomTextField(
+                      controller: emailController,
                       prefixIcon: const Icon(
                         Icons.email_outlined,
                         size: 20,
@@ -153,10 +200,12 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       height: 10,
                     ),
                     CustomTextField(
+                      controller: passwordController,
                       prefixIcon: const Icon(
                         Icons.lock_outline,
                         size: 20,
                       ),
+                      obscureText: true,
                       hintText: "•••••••••••••",
                       fillColor: AppColors.scaffoldColor,
                       enableBorder: OutlineInputBorder(
@@ -191,6 +240,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                                   returnIndex: (catchIndex) {
                                     setState(() {
                                       selIndex = catchIndex;
+                                      selectedCategory = categories[index];
                                     });
                                   },
                                 ),
@@ -227,9 +277,15 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                     borderRadius: BorderRadius.circular(10),
                     width: 100.w,
                     onPressed: () {
-                      // final accountToSet = Account(id: , icon: , domain: , category: , email: , password: );
-                      // Provider.of<AccountsProvider>(context,listen: false).addAccount(account: accountToSet, uid: '');
-                      // AppNavigation.navigatorPop(context);
+                      if(domainController.text.isEmpty || emailController.text.isEmpty || passwordController.text.isEmpty || selectedCategory!.isEmpty ){
+                        Fluttertoast.showToast(msg: AppStrings.fieldMissing);
+                      }
+                      else{
+                        final accountToSet = Account(id: FirebaseAuth.instance.currentUser?.uid, domain: domainController.text, category: selectedCategory , email: emailController.text, password: passwordController.text,fullName: fullNameController.text.isEmpty?userProvider.user?.fullName:fullNameController.text);
+                        Provider.of<AccountsProvider>(context,listen: false).addAccount(account: accountToSet, uid: FirebaseAuth.instance.currentUser?.uid,);
+                      }
+
+                      //AppNavigation.navigatorPop(context);
                     },
                   ),
                 ],

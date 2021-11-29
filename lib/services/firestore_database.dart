@@ -34,16 +34,16 @@ class DatabaseService {
   }
 
   Future addAccountData({
-    String? icon,
+    String? fullName,
     String? domain,
     String? email,
     String? password,
     String? category,
   }) async {
     final response =
-        await userCollection.doc('users/$uid').collection('Accounts').add(
+        await userCollection.doc(uid).collection('accounts').add(
       {
-        "icon": icon,
+        "fullname": fullName,
         "domain": domain,
         "email": email,
         "password": password,

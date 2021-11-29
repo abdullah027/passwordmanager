@@ -7,6 +7,7 @@ import 'package:passwordmanager/services/providers/account_provider.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/splashScreen/splash_screen.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
+import 'package:passwordmanager/utilis/them_changer.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -31,10 +32,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isDark = false;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeChanger(ThemeMode.dark)),
         Provider<AuthenticationService>(
           create: (_) => AuthenticationService(FirebaseAuth.instance),
         ),
@@ -43,9 +44,11 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: Sizer(builder: (context, orientation, type) {
+        final theme = Provider.of<ThemeChanger>(context);
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
+          themeMode: theme.getTheme(),
           darkTheme: ThemeData(
             scaffoldBackgroundColor: AppColors.scaffoldColor2,
             fontFamily: 'Mulish',
@@ -60,7 +63,6 @@ class _MyAppState extends State<MyApp> {
             appBarTheme: const AppBarTheme(
                 elevation: 0, backgroundColor: AppColors.scaffoldColor),
           ),
-          themeMode: _isDark == true ? ThemeMode.dark : ThemeMode.light,
           home: const SplashScreen(),
         );
       }),

@@ -9,6 +9,7 @@ import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/asset_paths.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:passwordmanager/utilis/them_changer.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -25,7 +26,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context,listen: false);
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
+      backgroundColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
+
       appBar: AppBar(
         centerTitle: true,
         title: CustomText(
@@ -66,8 +70,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 decoration: BoxDecoration(
-                    color: AppColors.scaffoldColor,
+                    color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
                     borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.transparent,
+                      width: _themeChanger.getTheme() == ThemeMode.dark?1:0,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.shadowColor.withOpacity(0.03),
@@ -89,6 +97,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   subtitle: CustomText(
                     title: userProvider.user?.email??"danielbraun691@gmail.com",
                     fontSize: 12,
+                    textColor: AppColors.greyText,
                   ),
                   trailing: CustomBlueButton(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -105,7 +114,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Container(
                padding: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                    color: AppColors.scaffoldColor,
+                    color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.transparent,
+                      width: _themeChanger.getTheme() == ThemeMode.dark?1:0,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.shadowColor.withOpacity(0.03),
@@ -121,25 +135,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: AppStrings.profile,
                       fontWeight: FontWeight.w900,
                       textAlign: TextAlign.left,
+                      textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
                     ),
                     const SizedBox(height: 10,),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.person_outline,color: AppColors.blueButtonColor,size: 20,),
-                      title: CustomText(title: AppStrings.inviteFriends,fontSize: 12,fontWeight: FontWeight.w600,),
-                      trailing: const Icon(Icons.arrow_forward_ios_rounded,size: 16,),
+                      title: CustomText(title: AppStrings.inviteFriends,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
+                      trailing: Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
                     ),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.notifications_none_outlined,color: AppColors.blueButtonColor,size: 20),
-                      title: CustomText(title: AppStrings.notifications,fontSize: 12,fontWeight: FontWeight.w600,),
-                      trailing: const Icon(Icons.arrow_forward_ios_rounded,size: 16,),
+                      title: CustomText(title: AppStrings.notifications,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
+                      trailing: Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
                     ),
                     ListTile(
+                      onTap: (){
+                        _themeChanger.setTheme(ThemeMode.light);
+                      },
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.wb_sunny_outlined,color: AppColors.blueButtonColor,size: 20),
-                      title: CustomText(title: AppStrings.theme,fontSize: 12,fontWeight: FontWeight.w600,),
-                      trailing: const Icon(Icons.arrow_forward_ios_rounded,size: 16,),
+                      title: CustomText(title: AppStrings.theme,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
+                      trailing:  Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
                     ),
                   ],
                 ),
@@ -150,7 +168,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                    color: AppColors.scaffoldColor,
+                    borderRadius: BorderRadius.circular(10),
+                    color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
+                    border: Border.all(
+                      color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.transparent,
+                      width: _themeChanger.getTheme() == ThemeMode.dark?1:0,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.shadowColor.withOpacity(0.03),
@@ -166,19 +189,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: AppStrings.security,
                       fontWeight: FontWeight.w900,
                       textAlign: TextAlign.left,
+                      textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.scaffoldColor2,
                     ),
                     const SizedBox(height: 10,),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.lock,color: AppColors.blueButtonColor,size: 20,),
-                      title: CustomText(title: AppStrings.password,fontSize: 12,fontWeight: FontWeight.w600,),
-                      trailing: const Icon(Icons.arrow_forward_ios_rounded,size: 16,),
+                      title: CustomText(title: AppStrings.password,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.scaffoldColor2,),
+                      trailing: Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.scaffoldColor2,),
                     ),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.security,color: AppColors.blueButtonColor,size: 20),
-                      title: CustomText(title: AppStrings.twoFactorAuth,fontSize: 12,fontWeight: FontWeight.w600,),
-                      trailing: const Icon(Icons.arrow_forward_ios_rounded,size: 16,),
+                      title: CustomText(title: AppStrings.twoFactorAuth,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.scaffoldColor2,),
+                      trailing: Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.scaffoldColor2,),
                     ),
                   ],
                 ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,8 @@ import 'package:passwordmanager/authScreens/verification_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/SettingsScreens/profile_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/add_account_screen.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
+import 'package:passwordmanager/services/providers/account_provider.dart';
+// import 'package:passwordmanager/services/providers/account_provider.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/bottom_navigation_bar.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
@@ -14,6 +17,7 @@ import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/asset_paths.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:passwordmanager/utilis/them_changer.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -31,12 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final panel2Controller = PanelController();
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final user = FirebaseAuth.instance.currentUser;
-
-  // void sharedPref()async{
-  //   Future<SharedPreferences> pref =  SharedPreferences.getInstance();
-  //   final SharedPreferences prefs = await pref;
-  //   prefs.getString();
-  // }
+  List _accounts = [];
+  final CollectionReference _collectionRef = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection('accounts');
 
   int selIndex = 0;
   bool? isSelected = false;
@@ -72,14 +72,28 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
 
+  Future<List<Object?>> getAccounts() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+    final data =  querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      _accounts = data;
+    });
+
+    return data;
+  }
+
   @override
   void initState() {
+    getAccounts();
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    var userProvider = Provider.of<UserProvider>(context, listen: true);
+    //var accountProvider = Provider.of<AccountsProvider>(context, listen: true);
 
     return Scaffold(
         key: _key,
@@ -263,11 +277,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: 10,
+                                itemCount: _accounts.isEmpty?3:_accounts.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     children: [
-                                      _listTile(),
+                                      _listTile(_accounts,index),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -568,7 +582,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _listTile() {
+  Widget _listTile(List data,int index) {
     return Container(
       decoration: BoxDecoration(
           color: AppColors.scaffoldColor,
@@ -588,12 +602,12 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 40,
             ),
             title: CustomText(
-              title: "Suara Musik",
+              title: data.isEmpty?'Suara Musik':data[index]['fullname'],
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
             subtitle: CustomText(
-              title: "annisahy@gmail.com",
+              title: data.isEmpty?'annisahy@gmail.com':data[index]['email'],
               fontSize: 12,
             ),
             trailing: IconButton(
@@ -610,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CustomText(
-                  title: "•••••••••••••",
+                  title: data.isEmpty?'•••••••••••••':data[index]['password'],
                   fontSize: 8,
                   textColor: AppColors.handleColor,
                 ),

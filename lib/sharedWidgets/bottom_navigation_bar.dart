@@ -5,6 +5,8 @@ import 'package:passwordmanager/bottomBarScreens/password_detail_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/settings_screen.dart';
 import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
+import 'package:passwordmanager/utilis/them_changer.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -18,13 +20,14 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Container(
       height: 6.h,
       decoration: BoxDecoration(
-          color: AppColors.scaffoldColor,
-          border: Border.all(width: 1, color: AppColors.borderColor),
-          boxShadow: const [
-            BoxShadow(blurRadius: 1, color: AppColors.borderColor)
+          color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
+          border: Border.all(width:_themeChanger.getTheme() == ThemeMode.dark?0:1, color: _themeChanger.getTheme() == ThemeMode.dark?Colors.black:AppColors.borderColor),
+          boxShadow: [
+            BoxShadow(blurRadius:_themeChanger.getTheme() == ThemeMode.dark?54: 1, color:_themeChanger.getTheme() == ThemeMode.dark? Colors.white.withOpacity(0.15):AppColors.borderColor)
           ]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -37,10 +40,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 });
               },
               icon: Icon(
-                Icons.home,
+                Icons.home_outlined,
                 color: widget.index == 0
                     ? AppColors.blueText
-                    : AppColors.greyText.withOpacity(0.3),
+                    : _themeChanger.getTheme() == ThemeMode.dark?AppColors.greyText:AppColors.greyText.withOpacity(0.3),
               )),
           IconButton(
               onPressed: () {
@@ -51,9 +54,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
               },
               icon: Icon(
                 Icons.verified_user_outlined,
+                size: 20,
                 color: widget.index == 1
                     ? AppColors.blueText
-                    : AppColors.greyText.withOpacity(0.3),
+                    : _themeChanger.getTheme() == ThemeMode.dark?AppColors.greyText:AppColors.greyText.withOpacity(0.3),
               )),
           const SizedBox(
             height: 20,
@@ -67,9 +71,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
               },
               icon: Icon(
                 Icons.lock_outline,
+                size: 20,
                 color: widget.index == 2
                     ? AppColors.blueText
-                    : AppColors.greyText.withOpacity(0.3),
+                    : _themeChanger.getTheme() == ThemeMode.dark?AppColors.greyText:AppColors.greyText.withOpacity(0.3),
               )),
           IconButton(
               onPressed: () {
@@ -79,10 +84,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 });
               },
               icon: Icon(
-                Icons.settings,
+                Icons.settings_outlined,
+                size: 20,
                 color: widget.index == 3
                     ? AppColors.blueText
-                    : AppColors.greyText.withOpacity(0.3),
+                    : _themeChanger.getTheme() == ThemeMode.dark?AppColors.greyText:AppColors.greyText.withOpacity(0.3),
               )),
         ],
       ),

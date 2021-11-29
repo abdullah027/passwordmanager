@@ -41,7 +41,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
             borderRadius: BorderRadius.circular(10.0),
             borderSide: widget.borderSide??const BorderSide(),
           ),
-
           filled: true,
           fillColor: widget.fillColor??AppColors.fillColor,
           hintStyle: TextStyle(
