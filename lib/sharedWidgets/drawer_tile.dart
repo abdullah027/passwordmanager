@@ -6,22 +6,26 @@ import 'package:passwordmanager/bottomBarScreens/settings_screen.dart';
 import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:passwordmanager/utilis/them_changer.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'custom_text.dart';
 
 class DrawerTile extends StatefulWidget {
-  final Icon? icon;
+  final IconData? icon;
   final String? title;
   bool? isSelected;
   Function(int?)? returnIndex;
   int? index;
+  Color? iconColor;
 
   DrawerTile(
       {Key? key,
       this.icon,
       this.title,
       this.isSelected,
+      this.iconColor,
       this.index,
       this.returnIndex})
       : super(key: key);
@@ -33,6 +37,7 @@ class DrawerTile extends StatefulWidget {
 class _DrawerTileState extends State<DrawerTile> {
   @override
   Widget build(BuildContext context) {
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -51,11 +56,17 @@ class _DrawerTileState extends State<DrawerTile> {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         decoration: BoxDecoration(
-            color: AppColors.scaffoldColor,
+            color: _themeChanger.getTheme() == ThemeMode.dark
+                ? Colors.black
+                : AppColors.scaffoldColor,
             borderRadius: BorderRadius.circular(10),
-            border: widget.isSelected == false
-                ? Border.all(color: AppColors.borderColor3, width: 1)
-                : null,
+            border: _themeChanger.getTheme() == ThemeMode.dark
+                ? widget.isSelected == false
+                    ? Border.all(color: Colors.transparent, width: 0)
+                    : Border.all(color: AppColors.borderColor3, width: 1)
+                : widget.isSelected == false
+                    ? Border.all(color: AppColors.borderColor3, width: 1)
+                    : null,
             boxShadow: [
               BoxShadow(
                 color: AppColors.shadowColor.withOpacity(0.05),
@@ -64,13 +75,14 @@ class _DrawerTileState extends State<DrawerTile> {
               )
             ]),
         child: ListTile(
-          leading: SizedBox(
-            height: 100.h,
-              child: widget.icon),
+          leading: SizedBox(height: 100.h, child: Icon(widget.icon,size: 18,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.scaffoldColor2,)),
           title: CustomText(
             title: widget.title,
             fontWeight: FontWeight.w600,
             fontSize: 12,
+            textColor: _themeChanger.getTheme() == ThemeMode.dark
+                ? AppColors.scaffoldColor
+                : Colors.black,
           ),
         ),
       ),

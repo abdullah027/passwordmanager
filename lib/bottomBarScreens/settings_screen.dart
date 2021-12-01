@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/SettingsScreens/profile_screen.dart';
@@ -15,6 +16,8 @@ import 'package:sizer/sizer.dart';
 
 import 'add_account_screen.dart';
 
+enum _ThemeType { light, dark }
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -23,13 +26,17 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  _ThemeType? _themeType = _ThemeType.light;
+  bool? isSelected;
+  bool _switchValue = false;
+
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context,listen: false);
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
       backgroundColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
-
       appBar: AppBar(
         centerTitle: true,
         title: CustomText(
@@ -151,13 +158,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       trailing: Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
                     ),
                     ListTile(
-                      onTap: (){
-                        _themeChanger.setTheme(ThemeMode.light);
-                      },
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.wb_sunny_outlined,color: AppColors.blueButtonColor,size: 20),
                       title: CustomText(title: AppStrings.theme,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
-                      trailing:  Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
+                      trailing: Transform.scale(
+                        scale: 0.5,
+                        child: CupertinoSwitch(
+                          activeColor: AppColors.blueButtonColor,
+                          thumbColor:  _themeChanger.getTheme() == ThemeMode.dark?Colors.black:AppColors.scaffoldColor,
+                          value: _switchValue,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _switchValue = value;
+
+                            });
+                            _switchValue == true? _themeChanger.setTheme(ThemeMode.dark): _themeChanger.setTheme(ThemeMode.light);
+                          },
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -212,5 +230,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
+  }
+
+  Widget _alertDialog(){
+    return StatefulBuilder(builder: (context,setState){
+      return AlertDialog(
+        backgroundColor: AppColors.scaffoldColor,
+        actions: [
+          Radio(
+              value: _ThemeType.light,
+              groupValue: _themeType,
+              onChanged: (_ThemeType? val) {
+                setState(() {
+                  _themeType = val;
+                });
+              }),
+          Radio(
+              value: _ThemeType.light,
+              groupValue: _themeType,
+              onChanged: (_ThemeType? val) {
+                setState(() {
+                  _themeType = val;
+                });
+              }),
+        ],
+      );
+    });
   }
 }

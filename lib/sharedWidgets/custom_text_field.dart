@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
+import 'package:passwordmanager/utilis/them_changer.dart';
+import 'package:provider/provider.dart';
 
 
 class CustomTextField extends StatefulWidget {
@@ -24,9 +26,13 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1),
       child: TextField(
+        style: TextStyle(
+          color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black
+        ),
         enabled: widget.enabled,
         textAlignVertical: TextAlignVertical.center,
         controller: widget.controller,
@@ -44,7 +50,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           filled: true,
           fillColor: widget.fillColor??AppColors.fillColor,
           hintStyle: TextStyle(
-              color: Colors.black.withOpacity(0.55), fontSize: 10),
+              color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black.withOpacity(0.55), fontSize: 10),
           hintText: widget.hintText,
         ),
         obscureText: widget.obscureText??false,

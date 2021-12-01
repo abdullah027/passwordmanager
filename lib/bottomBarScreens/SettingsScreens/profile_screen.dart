@@ -11,6 +11,7 @@ import 'package:passwordmanager/sharedWidgets/custom_text_field.dart';
 import 'package:passwordmanager/utilis/asset_paths.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:passwordmanager/utilis/them_changer.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -33,7 +34,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
+      backgroundColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
       body: Stack(
         children: [
           SizedBox(
@@ -44,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                   height: 100.h,
                   width: 50.w,
-                  color: AppColors.scaffoldColor,
+                  color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
                 ),
                 Container(
                   height: 100.h,
@@ -131,10 +134,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 flex: 2,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: AppColors.scaffoldColor,
+                  decoration: BoxDecoration(
+                    color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
                     borderRadius:
-                        BorderRadius.only(topRight: Radius.circular(60)),
+                        const BorderRadius.only(topRight: Radius.circular(60)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -157,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             controller: fullNameController,
                             hintText:
                                 userProvider.user?.fullName ?? "Daniel Braun",
-                            fillColor: AppColors.scaffoldColor,
+                            fillColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
                             enableBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
@@ -179,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             controller: emailController,
                             hintText: userProvider.user?.email ??
                                 "danielbraun691@gmail.com",
-                            fillColor: AppColors.scaffoldColor,
+                            fillColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
                             enableBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
@@ -201,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             controller: phoneController,
                             hintText:
                                 userProvider.user?.phone ?? "+1 343 454 564",
-                            fillColor: AppColors.scaffoldColor,
+                            fillColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor2:AppColors.scaffoldColor,
                             enableBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
@@ -230,6 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             title: AppStrings.notifications,
                             fontWeight: FontWeight.w900,
                             fontSize: 12,
+                            textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
                           ),
                           const SizedBox(
                             height: 20,
@@ -241,7 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 title: AppStrings.app,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,
-                                textColor: AppColors.appColor,
+                                textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.appColor,
                               ),
                               Transform.scale(
                                 scale: 0.5,

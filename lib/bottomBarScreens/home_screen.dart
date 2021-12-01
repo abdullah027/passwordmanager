@@ -36,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final user = FirebaseAuth.instance.currentUser;
   List _accounts = [];
-  final CollectionReference _collectionRef = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection('accounts');
+  final CollectionReference _collectionRef = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('accounts');
 
   int selIndex = 0;
   bool? isSelected = false;
@@ -47,17 +50,11 @@ class _HomeScreenState extends State<HomeScreen> {
     AppStrings.rateApp,
     AppStrings.settings,
   ];
-  List<Icon> drawerIcons = const [
-    Icon(
-      Icons.home,
-      size: 18,
-    ),
-    Icon(
-      Icons.lock,
-      size: 18,
-    ),
-    Icon(Icons.star_rate_rounded, size: 20),
-    Icon(Icons.settings, size: 18),
+  List<IconData> drawerIcons = const [
+    Icons.home,
+    Icons.lock,
+    Icons.star_rate_rounded,
+    Icons.settings
   ];
 
   List<Icon> icons = const [
@@ -75,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<List<Object?>> getAccounts() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionRef.get();
-    final data =  querySnapshot.docs.map((doc) => doc.data()).toList();
+    final data = querySnapshot.docs.map((doc) => doc.data()).toList();
     setState(() {
       _accounts = data;
     });
@@ -87,19 +84,21 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     getAccounts();
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context, listen: true);
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     //var accountProvider = Provider.of<AccountsProvider>(context, listen: true);
 
     return Scaffold(
+        backgroundColor: _themeChanger.getTheme() == ThemeMode.dark
+            ? AppColors.scaffoldColor2
+            : AppColors.blueButtonColor,
         key: _key,
         drawer: SafeArea(child: _drawer()),
         extendBodyBehindAppBar: true,
-        backgroundColor: AppColors.blueButtonColor,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -115,6 +114,9 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Stack(
           children: [
             SlidingUpPanel(
+                color: _themeChanger.getTheme() == ThemeMode.dark
+                    ? Colors.black
+                    : AppColors.scaffoldColor,
                 controller: panelController,
                 minHeight: 35.h,
                 maxHeight: 70.h,
@@ -122,6 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     topRight: Radius.circular(20),
                     topLeft: Radius.circular(20)),
                 body: SlidingUpPanel(
+                  color: _themeChanger.getTheme() == ThemeMode.dark
+                      ? Colors.black
+                      : AppColors.scaffoldColor,
                   controller: panel2Controller,
                   minHeight: 70.h,
                   maxHeight: 80.h,
@@ -190,6 +195,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: AppStrings.myCategoryAccount,
                           fontSize: 14,
                           fontWeight: FontWeight.w900,
+                          textColor: _themeChanger.getTheme() == ThemeMode.dark
+                              ? AppColors.scaffoldColor
+                              : Colors.black,
                         ),
                         const SizedBox(
                           height: 10,
@@ -207,7 +215,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 5,
                               width: 50,
                               decoration: BoxDecoration(
-                                  color: AppColors.handleColor,
+                                  color:
+                                      _themeChanger.getTheme() == ThemeMode.dark
+                                          ? AppColors.scaffoldColor
+                                          : AppColors.handleColor,
                                   borderRadius: BorderRadius.circular(20)),
                             ))),
                         const SizedBox(
@@ -249,6 +260,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: "Latest Account",
                             fontSize: 14,
                             fontWeight: FontWeight.w900,
+                            textColor:
+                                _themeChanger.getTheme() == ThemeMode.dark
+                                    ? AppColors.scaffoldColor
+                                    : Colors.black,
                           ),
                           const SizedBox(
                             height: 10,
@@ -266,7 +281,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 5,
                                 width: 50,
                                 decoration: BoxDecoration(
-                                    color: AppColors.handleColor,
+                                    color: _themeChanger.getTheme() ==
+                                            ThemeMode.dark
+                                        ? AppColors.scaffoldColor
+                                        : AppColors.handleColor,
                                     borderRadius: BorderRadius.circular(20)),
                               ))),
                           const SizedBox(
@@ -277,11 +295,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: _accounts.isEmpty?3:_accounts.length,
+                                itemCount:
+                                    _accounts.isEmpty ? 3 : _accounts.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     children: [
-                                      _listTile(_accounts,index),
+                                      _listTile(_accounts, index),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -292,47 +311,49 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     )),
-            user!.emailVerified
+            user == null
                 ? Container()
-                : Positioned(
-                    bottom: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        AppNavigation.navigateTo(
-                            context, const VerificationScreen());
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        color: AppColors.blueButtonColor,
-                        height: 10.h,
-                        width: 100.w,
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 10,
+                : user!.emailVerified
+                    ? Container()
+                    : Positioned(
+                        bottom: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            AppNavigation.navigateTo(
+                                context, const VerificationScreen());
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            color: AppColors.blueButtonColor,
+                            height: 10.h,
+                            width: 100.w,
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomText(
+                                  title: AppStrings.verifyText,
+                                  textColor: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                CustomText(
+                                  title:
+                                      "Your email is not verified, tap here and verify your email.",
+                                  textColor: Colors.white,
+                                  fontSize: 12,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
-                            CustomText(
-                              title: AppStrings.verifyText,
-                              textColor: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            CustomText(
-                              title:
-                                  "Your email is not verified, tap here and verify your email.",
-                              textColor: Colors.white,
-                              fontSize: 12,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
           ],
         ));
   }
@@ -368,13 +389,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _drawer() {
     var userProvider = Provider.of<UserProvider>(context, listen: true);
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Drawer(
       child: Container(
         width: 40.w,
         height: 100.h,
         decoration: BoxDecoration(
-          color: AppColors.scaffoldColor,
-          borderRadius: BorderRadius.circular(20),
+          color: _themeChanger.getTheme() == ThemeMode.dark
+              ? Colors.black
+              : AppColors.scaffoldColor,
         ),
         child: Column(
           children: [
@@ -407,17 +430,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               userProvider.user?.fullName ?? "Annisa Handayani",
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
+                          textColor: _themeChanger.getTheme() == ThemeMode.dark
+                              ? AppColors.scaffoldColor
+                              : Colors.black,
                         ),
                         subtitle: CustomText(
                           title:
                               userProvider.user?.email ?? 'annisahy@gmail.com',
                           fontSize: 12,
+                          textColor: _themeChanger.getTheme() == ThemeMode.dark
+                              ? AppColors.scaffoldColor
+                              : Colors.black,
                         ),
                         trailing: IconButton(
                           onPressed: () {},
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.keyboard_arrow_down,
-                            color: AppColors.handleColor,
+                            color: _themeChanger.getTheme() == ThemeMode.dark
+                                ? AppColors.scaffoldColor
+                                : AppColors.handleColor,
                           ),
                         ),
                       ),
@@ -446,17 +477,27 @@ class _HomeScreenState extends State<HomeScreen> {
               flex: 0,
               child: GestureDetector(
                 onTap: () {
-                  AuthenticationService(FirebaseAuth.instance).signOut(context);
+                  AuthenticationService(FirebaseAuth.instance).signOut(context).then((value) {
+                    _themeChanger.setTheme(ThemeMode.light);
+                  });
                 },
                 child: Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: BoxDecoration(
-                      color: AppColors.scaffoldColor,
+                      color: _themeChanger.getTheme() == ThemeMode.dark
+                          ? Colors.black
+                          : AppColors.scaffoldColor,
                       borderRadius: BorderRadius.circular(10),
-                      border: isSelected == false
-                          ? Border.all(color: AppColors.borderColor3, width: 1)
-                          : null,
+                      border: _themeChanger.getTheme() == ThemeMode.dark
+                          ? isSelected == false
+                              ? Border.all(color: Colors.transparent, width: 0)
+                              : Border.all(
+                                  color: AppColors.borderColor3, width: 1)
+                          : isSelected == false
+                              ? Border.all(
+                                  color: AppColors.borderColor3, width: 1)
+                              : null,
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.shadowColor.withOpacity(0.05),
@@ -582,11 +623,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _listTile(List data,int index) {
+  Widget _listTile(List data, int index) {
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Container(
       decoration: BoxDecoration(
-          color: AppColors.scaffoldColor,
+          color: _themeChanger.getTheme() == ThemeMode.dark
+              ? Colors.black
+              : AppColors.scaffoldColor,
           borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: _themeChanger.getTheme() == ThemeMode.dark
+                ? AppColors.scaffoldColor
+                : Colors.transparent,
+            width: _themeChanger.getTheme() == ThemeMode.dark ? 1 : 0,
+          ),
           boxShadow: [
             BoxShadow(
               color: AppColors.shadowColor.withOpacity(0.05),
@@ -602,19 +652,27 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 40,
             ),
             title: CustomText(
-              title: data.isEmpty?'Suara Musik':data[index]['fullname'],
+              title: data.isEmpty ? 'Suara Musik' : data[index]['fullname'],
               fontSize: 14,
               fontWeight: FontWeight.w600,
+              textColor: _themeChanger.getTheme() == ThemeMode.dark
+                  ? AppColors.scaffoldColor
+                  : Colors.black,
             ),
             subtitle: CustomText(
-              title: data.isEmpty?'annisahy@gmail.com':data[index]['email'],
+              title: data.isEmpty ? 'annisahy@gmail.com' : data[index]['email'],
               fontSize: 12,
+              textColor: _themeChanger.getTheme() == ThemeMode.dark
+                  ? AppColors.scaffoldColor
+                  : Colors.black,
             ),
             trailing: IconButton(
               onPressed: () {},
-              icon: const Icon(
+              icon: Icon(
                 Icons.more_vert,
-                color: AppColors.handleColor,
+                color: _themeChanger.getTheme() == ThemeMode.dark
+                    ? AppColors.scaffoldColor
+                    : AppColors.handleColor,
               ),
             ),
           ),
@@ -624,7 +682,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CustomText(
-                  title: data.isEmpty?'•••••••••••••':data[index]['password'],
+                  title: '•••••••••••••',
                   fontSize: 8,
                   textColor: AppColors.handleColor,
                 ),

@@ -56,6 +56,8 @@ class AppStrings{
   static const normal = "Normal";
   static const strong = "Strong";
   static const veryStrong = "Very Strong";
+  static const light = "Light";
+  static const dark = "Dark";
   static const edit = "Edit";
   static const profile = "Profile";
   static const inviteFriends = "Invite other friends to this app";
@@ -73,6 +75,7 @@ class AppStrings{
 
   static const fieldMissing = "One of the field is empty";
   static const passwordDoNotMatch = "Password do not match";
+  static const unAuthorized = "UnAuthorized";
 
 
 
