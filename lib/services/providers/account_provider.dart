@@ -7,9 +7,13 @@ import '../firestore_database.dart';
 
 class AccountProvider extends ChangeNotifier {
   Accounts? _user;
-  List<Accounts> getAccounts = [];
+  List<Accounts> _accounts = [];
 
   Accounts? get user => _user;
+
+  List<Accounts> get accounts {
+    return _accounts;
+  }
 
   void setUser(Accounts? user) {
     _user = user;
@@ -22,10 +26,17 @@ class AccountProvider extends ChangeNotifier {
   }
 
   void fetchAccountsList(List data) {
-    getAccounts = [];
+    _accounts = [];
     for (var element in data) {
-      getAccounts.add(Accounts.fromDocument(element));
+      _accounts.add(Accounts.fromDocument(element));
     }
+    notifyListeners();
+  }
+
+  void deleteAccount(index) {
+    DatabaseService(_user!.id).deleteAccountData(index).then(
+          (_) => _accounts.removeAt(index),
+        );
     notifyListeners();
   }
 }

@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var userProvider = Provider.of<UserProvider>(context, listen: true);
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     var accountProvider = Provider.of<AccountProvider>(context, listen: true);
-    print(accountProvider.getAccounts);
+    //print(accountProvider.getAccounts);
     return Scaffold(
         backgroundColor: _themeChanger.getTheme() == ThemeMode.dark
             ? AppColors.scaffoldColor2
@@ -297,12 +297,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 physics: const BouncingScrollPhysics(),
-                                itemCount:
-                                    accountProvider.getAccounts.isEmpty ? 3 : accountProvider.getAccounts.length,
+                                itemCount: accountProvider.accounts.isEmpty
+                                    ? 3
+                                    : accountProvider.accounts.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     children: [
-                                      _listTile(accountProvider.getAccounts, index),
+                                      _listTile(
+                                          accountProvider.accounts, index),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -679,13 +681,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (BuildContext context) {
                       return StatefulBuilder(builder: (context, setState) {
                         return GestureDetector(
-                          onTap: (){
-                            DatabaseService(FirebaseAuth.instance.currentUser?.uid).deleteAccountData(index);
-                            accountProvider.restUserProvider();
+                          onTap: () {
+                            Provider.of<AccountProvider>(context)
+                                .deleteAccount(index);
                             Navigator.pop(context);
                           },
                           child: AlertDialog(
-                            contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 20),
                             content: CustomText(
                               title: "Delete",
                             ),
