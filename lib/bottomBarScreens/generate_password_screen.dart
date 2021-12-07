@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/sharedWidgets/bottom_navigation_bar.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
@@ -13,8 +14,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:password_strength/password_strength.dart';
-
 import 'add_account_screen.dart';
+import 'package:clipboard/clipboard.dart';
 
 enum _PassWordType { normal, strong, veryStrong }
 
@@ -127,44 +128,16 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                               trackWidth: 2,
                               progressBarWidth: 5),
                           customColors: CustomSliderColors(
-                            dynamicGradient: false,
-                            progressBarColor: AppColors.blueButtonColor,
-                            trackColor: AppColors.scaffoldColor
-                          ),
+                              dynamicGradient: false,
+                              progressBarColor: AppColors.blueButtonColor,
+                              trackColor: AppColors.scaffoldColor),
                         ),
                       ),
                     ),
                     const SizedBox(
                       height: 50,
                     ),
-                    Container(
-                        width: 100.w,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: _themeChanger.getTheme() == ThemeMode.dark
-                                  ? AppColors.scaffoldColor
-                                  : Colors.transparent,
-                              width: _themeChanger.getTheme() == ThemeMode.dark
-                                  ? 1
-                                  : 0,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.shadowColor.withOpacity(0.21),
-                                blurRadius: 54,
-                                offset: const Offset(2, 2),
-                              ),
-                            ]),
-                        child: CustomTextField(
-                          controller: _controller,
-                          fillColor: _themeChanger.getTheme() == ThemeMode.dark
-                              ? Colors.black
-                              : AppColors.scaffoldColor,
-                          enabled: false,
-                          borderSide: BorderSide.none,
-                        )),
+                    genField(),
                     const SizedBox(
                       height: 20,
                     ),
@@ -180,7 +153,10 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                         ),
                         Theme(
                           data: ThemeData(
-                            unselectedWidgetColor:_themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                            unselectedWidgetColor:
+                                _themeChanger.getTheme() == ThemeMode.dark
+                                    ? AppColors.scaffoldColor
+                                    : Colors.black,
                           ),
                           child: Radio(
                               value: _PassWordType.normal,
@@ -208,7 +184,10 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                         ),
                         Theme(
                           data: ThemeData(
-                            unselectedWidgetColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                            unselectedWidgetColor:
+                                _themeChanger.getTheme() == ThemeMode.dark
+                                    ? AppColors.scaffoldColor
+                                    : Colors.black,
                           ),
                           child: Radio(
                               value: _PassWordType.strong,
@@ -236,7 +215,10 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                         ),
                         Theme(
                           data: ThemeData(
-                            unselectedWidgetColor:_themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                            unselectedWidgetColor:
+                                _themeChanger.getTheme() == ThemeMode.dark
+                                    ? AppColors.scaffoldColor
+                                    : Colors.black,
                           ),
                           child: Radio(
                               value: _PassWordType.veryStrong,
@@ -277,7 +259,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                   text: AppStrings.generatePassword,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -286,7 +268,8 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
 
   String generatePassword(
       {bool? normal = true, bool? strong = false, bool? veryStrong = false}) {
-    const length = 12;
+    final random = Random();
+    var length = 6;
     const lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
     const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const numbers = '0123456789';
@@ -301,5 +284,50 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
       final randomIndex = Random.secure().nextInt(chars.length);
       return chars[randomIndex];
     }).join('');
+  }
+
+  Widget genField() {
+    ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
+    return Container(
+        width: 100.w,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: _themeChanger.getTheme() == ThemeMode.dark
+                  ? AppColors.scaffoldColor
+                  : Colors.transparent,
+              width: _themeChanger.getTheme() == ThemeMode.dark ? 1 : 0,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadowColor.withOpacity(0.21),
+                blurRadius: 54,
+                offset: const Offset(2, 2),
+              ),
+            ]),
+        child: CustomTextField(
+          controller: _controller,
+          fillColor: _themeChanger.getTheme() == ThemeMode.dark
+              ? Colors.black
+              : AppColors.scaffoldColor,
+          enabled: false,
+          borderSide: BorderSide.none,
+          suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                print("woow");
+                FlutterClipboard.copy(_controller.text);
+                Fluttertoast.showToast(msg: "Copied to Clipboard");
+              });
+            },
+            icon: Icon(
+              Icons.copy,
+              color: _themeChanger.getTheme() == ThemeMode.dark
+                  ? AppColors.scaffoldColor
+                  : Colors.black,
+            ),
+          ),
+        ));
   }
 }

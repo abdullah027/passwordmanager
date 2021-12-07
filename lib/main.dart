@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
           create: (_) => AuthenticationService(FirebaseAuth.instance),
         ),
         ChangeNotifierProvider(
-          create: (_) => AccountsProvider(),
+          create: (_) => AccountProvider(),
         ),
       ],
       child: Sizer(builder: (context, orientation, type) {

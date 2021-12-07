@@ -9,6 +9,7 @@ import 'package:passwordmanager/authScreens/login_screen.dart';
 import 'package:passwordmanager/authScreens/verification_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/services/local_storage.dart';
+import 'package:passwordmanager/services/providers/account_provider.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
@@ -140,5 +141,20 @@ class AuthenticationService {
     } on FirebaseException catch (e) {
       Fluttertoast.showToast(msg: e.message.toString());
     }
+  }
+
+  Future<List<Object?>> getAccounts(context) async {
+    var accountProvider = Provider.of<AccountProvider>(context, listen: false);
+    final CollectionReference _collectionRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('accounts');
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+    final data = querySnapshot.docs.map((doc) => doc.data()).toList();
+    print(data);
+    accountProvider.fetchAccountsList(data);
+
+
+    return data;
   }
 }

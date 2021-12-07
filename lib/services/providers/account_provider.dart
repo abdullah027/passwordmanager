@@ -1,50 +1,31 @@
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:passwordmanager/Models/account_model.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
 
 import '../firestore_database.dart';
 
-class Account {
-  String? fullName;
-  String? id;
-  String? domain;
-  //String? icon;
-  String? email;
-  String? password;
-  String? category;
+class AccountProvider extends ChangeNotifier {
+  Accounts? _user;
+  List<Accounts> getAccounts = [];
 
-  Account({
-    this.fullName,
-    this.id,
-    this.domain,
-    //this.icon,
-    this.email,
-    this.password,
-    this.category,
-  });
-}
+  Accounts? get user => _user;
 
-class AccountsProvider with ChangeNotifier {
-  final List<Account> _items = [];
-
-  List<Account> get items {
-    return _items;
+  void setUser(Accounts? user) {
+    _user = user;
+    notifyListeners();
   }
 
-  Future addAccount({Account? account, String? uid}) async {
-    try {
-      await DatabaseService(uid)
-          .addAccountData(
-        fullName: account?.fullName,
-        domain: account?.domain,
-        category: account?.category,
-        email: account?.email,
-        password: account?.password,
-      );
-      notifyListeners();
-      Fluttertoast.showToast(msg: AppStrings.successfullyAdded);
-    } on Exception catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+  void restUserProvider() {
+    _user = null;
+    notifyListeners();
+  }
+
+  void fetchAccountsList(List data) {
+    getAccounts = [];
+    for (var element in data) {
+      getAccounts.add(Accounts.fromDocument(element));
     }
+    notifyListeners();
   }
 }

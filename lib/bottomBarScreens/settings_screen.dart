@@ -109,7 +109,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   trailing: CustomBlueButton(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     onPressed: (){
-                      AppNavigation.navigateTo(context, const ProfileScreen());
+                      AppNavigation.navigateReplacement(context, const ProfileScreen());
                     },
                     text: AppStrings.edit,
                   ),

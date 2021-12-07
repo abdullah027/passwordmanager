@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:passwordmanager/Models/account_model.dart';
 import 'package:passwordmanager/authScreens/verification_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/SettingsScreens/profile_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/add_account_screen.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
+import 'package:passwordmanager/services/firestore_database.dart';
 import 'package:passwordmanager/services/providers/account_provider.dart';
 // import 'package:passwordmanager/services/providers/account_provider.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
@@ -35,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final panel2Controller = PanelController();
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final user = FirebaseAuth.instance.currentUser;
-  List _accounts = [];
   final CollectionReference _collectionRef = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -69,20 +70,21 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
 
-  Future<List<Object?>> getAccounts() async {
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _collectionRef.get();
-    final data = querySnapshot.docs.map((doc) => doc.data()).toList();
-    setState(() {
-      _accounts = data;
-    });
-
-    return data;
-  }
+  // Future<List<Object?>> getAccounts() async {
+  //   // Get docs from collection reference
+  //   QuerySnapshot querySnapshot = await _collectionRef.get();
+  //   final data = querySnapshot.docs.map((doc) => doc.data()).toList();
+  //   setState(() {
+  //     _accounts = data;
+  //   });
+  //
+  //   return data;
+  // }
 
   @override
   void initState() {
-    getAccounts();
+    AuthenticationService(FirebaseAuth.instance).getAccounts(context);
+    //getAccounts();
     super.initState();
   }
 
@@ -90,8 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context, listen: true);
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
-    //var accountProvider = Provider.of<AccountsProvider>(context, listen: true);
-
+    var accountProvider = Provider.of<AccountProvider>(context, listen: true);
+    print(accountProvider.getAccounts);
     return Scaffold(
         backgroundColor: _themeChanger.getTheme() == ThemeMode.dark
             ? AppColors.scaffoldColor2
@@ -296,11 +298,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     horizontal: 10, vertical: 10),
                                 physics: const BouncingScrollPhysics(),
                                 itemCount:
-                                    _accounts.isEmpty ? 3 : _accounts.length,
+                                    accountProvider.getAccounts.isEmpty ? 3 : accountProvider.getAccounts.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     children: [
-                                      _listTile(_accounts, index),
+                                      _listTile(accountProvider.getAccounts, index),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -477,7 +479,9 @@ class _HomeScreenState extends State<HomeScreen> {
               flex: 0,
               child: GestureDetector(
                 onTap: () {
-                  AuthenticationService(FirebaseAuth.instance).signOut(context).then((value) {
+                  AuthenticationService(FirebaseAuth.instance)
+                      .signOut(context)
+                      .then((value) {
                     _themeChanger.setTheme(ThemeMode.light);
                   });
                 },
@@ -623,8 +627,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _listTile(List data, int index) {
+  Widget _listTile(List<Accounts> data, int index) {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
+    var accountProvider = Provider.of<AccountProvider>(context, listen: true);
+
     return Container(
       decoration: BoxDecoration(
           color: _themeChanger.getTheme() == ThemeMode.dark
@@ -652,7 +658,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 40,
             ),
             title: CustomText(
-              title: data.isEmpty ? 'Suara Musik' : data[index]['fullname'],
+              title: data.isEmpty ? 'Suara Musik' : data[index].fullName,
               fontSize: 14,
               fontWeight: FontWeight.w600,
               textColor: _themeChanger.getTheme() == ThemeMode.dark
@@ -660,14 +666,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   : Colors.black,
             ),
             subtitle: CustomText(
-              title: data.isEmpty ? 'annisahy@gmail.com' : data[index]['email'],
+              title: data.isEmpty ? 'annisahy@gmail.com' : data[index].email,
               fontSize: 12,
               textColor: _themeChanger.getTheme() == ThemeMode.dark
                   ? AppColors.scaffoldColor
                   : Colors.black,
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(builder: (context, setState) {
+                        return GestureDetector(
+                          onTap: (){
+                            DatabaseService(FirebaseAuth.instance.currentUser?.uid).deleteAccountData(index);
+                            accountProvider.restUserProvider();
+                            Navigator.pop(context);
+                          },
+                          child: AlertDialog(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+                            content: CustomText(
+                              title: "Delete",
+                            ),
+                          ),
+                        );
+                      });
+                    });
+              },
               icon: Icon(
                 Icons.more_vert,
                 color: _themeChanger.getTheme() == ThemeMode.dark

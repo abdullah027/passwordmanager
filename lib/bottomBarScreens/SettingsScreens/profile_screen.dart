@@ -17,6 +17,7 @@ import 'package:sizer/sizer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../utilis/app_navigation.dart';
+import '../home_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -77,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           alignment: Alignment.topLeft,
                           child: IconButton(
                               onPressed: () {
-                                AppNavigation.navigatorPop(context);
+                                AppNavigation.navigateReplacement(context, const HomeScreen());
                               },
                               icon: const Icon(
                                 Icons.arrow_back_ios,

@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:passwordmanager/Models/account_model.dart';
+import 'package:passwordmanager/services/firestore_database.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
@@ -292,8 +294,8 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                           Fluttertoast.showToast(msg: AppStrings.unAuthorized);
                         }
                         else{
-                          final accountToSet = Account(id: FirebaseAuth.instance.currentUser?.uid, domain: domainController.text, category: selectedCategory , email: emailController.text, password: passwordController.text,fullName: fullNameController.text.isEmpty?userProvider.user?.fullName:fullNameController.text);
-                          Provider.of<AccountsProvider>(context,listen: false).addAccount(account: accountToSet, uid: FirebaseAuth.instance.currentUser?.uid,);
+                          DatabaseService(FirebaseAuth.instance.currentUser?.uid).addAccountData(domain: domainController.text, category: selectedCategory , email: emailController.text, password: passwordController.text,fullName: fullNameController.text.isEmpty?userProvider.user?.fullName:fullNameController.text);
+                          AppNavigation.navigatorPop(context);
                         }
 
                       }
