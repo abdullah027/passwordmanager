@@ -1,12 +1,16 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class DatabaseService {
+  //uid shows null??
   final String? uid;
 
   DatabaseService(this.uid);
@@ -75,5 +79,27 @@ class DatabaseService {
     });
     print(response);
     return response;
+  }
+
+  //uid causing issue
+  Future<String?> uploadProfilePic(File chosenImage, String userID) async {
+    String fileName = userID;
+
+    Reference ref = FirebaseStorage.instance.ref().child('profilePics/$uid');
+    UploadTask uploadPicture = ref.putFile(chosenImage);
+    final response =
+        await uploadPicture.then((task) => task.ref.getDownloadURL());
+
+    print(response);
+    setProfileUrl(response, userID);
+    return response.toString();
+  }
+
+  void setProfileUrl(String profilePhoto, String uid) async {
+    final response = await userCollection.doc(uid).set({
+      "image": profilePhoto,
+    }, SetOptions(merge: true)).then((value) {
+      Fluttertoast.showToast(msg: AppStrings.uploadDone);
+    });
   }
 }

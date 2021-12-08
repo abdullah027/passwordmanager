@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '/services/firebase_auth.dart';
 import '/services/firestore_database.dart';
@@ -33,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  File? chosenImage;
+  File? _chosenFile;
 
   //call initialize valueson page load
   @override
@@ -53,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _switchValue = false;
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    var userProvider = Provider.of<UserProvider>(context, listen: true);
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
       backgroundColor: _themeChanger.getTheme() == ThemeMode.dark
@@ -117,8 +118,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CircleAvatar(
                                 maxRadius: 45,
                                 backgroundColor: AppColors.scaffoldColor,
-                                child: chosenImage != null
-                                    ? Image.asset(chosenImage!.path)
+                                child: userProvider.user!.image != null
+                                    ? Image.network(userProvider.user!.image!)
                                     : Image.asset(
                                         AssetPaths.profile,
                                         height: 80,
@@ -147,7 +148,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       size: 16,
                                     ),
                                     onPressed: () async {
-                                      chosenImage = await PickFile().getImage();
+                                      final chosenImage =
+                                          await ImagePicker().pickImage(
+                                        source: ImageSource.gallery,
+                                      );
+                                      setState(() {
+                                        _chosenFile = File(chosenImage!.path);
+                                      });
+                                      Provider.of<UserProvider>(context,
+                                              listen: false)
+                                          .setProfilePic(
+                                              _chosenFile!,
+                                              FirebaseAuth
+                                                  .instance.currentUser!.uid);
+
                                       print('Pressed');
                                     },
                                   ),

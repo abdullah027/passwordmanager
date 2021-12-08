@@ -1,13 +1,12 @@
-
-class AppStrings{
-
+class AppStrings {
   static const appName = "Reganam";
   static const saveAndGenerateText = "Save And Generate Your";
   static const username = "Username";
   static const password = " Password";
   static const retypePassword = " Retype Password";
   static const easily = " Easily";
-  static const onBoardingText = "You can save personal or work passwords here securely";
+  static const onBoardingText =
+      "You can save personal or work passwords here securely";
   static const getStarted = "Get Started";
   static const letsSavePasswords = "Lets Save Passwords";
   static const logIn = "Login";
@@ -19,16 +18,20 @@ class AppStrings{
   static const tryAnotherWays = "Try Another Ways";
   static const register = "Register";
   static const helloWelcome = "Hello Welcome!";
-  static const welcomeText = "Welcome in Reganam. Lets save passwords for remembrance.";
+  static const welcomeText =
+      "Welcome in Reganam. Lets save passwords for remembrance.";
   static const welcomeBack = "Welcome back";
-  static const newPasswordText = "Reset your password for recovery & login to your account.";
-  static const welcomeText2 = "Welcome in Reganam. Lets generate new strong passwords.";
+  static const newPasswordText =
+      "Reset your password for recovery & login to your account.";
+  static const welcomeText2 =
+      "Welcome in Reganam. Lets generate new strong passwords.";
   static const emailInfo = "Enter your email address to recover your account";
   static const usernameText = "Enter username";
   static const passwordText = "Enter password";
   static const forgotPasswordText = "Forgot password?";
   static const verifyText = "Verify your email";
-  static const verifyDescText = "Please check your email to enter 4 digits code to continue.";
+  static const verifyDescText =
+      "Please check your email to enter 4 digits code to continue.";
   static const verifyEmailText = "An email has been sent to ";
   static const verifyEmailText2 = ", please verify.";
   static const noAccountText = "Don't have an account?";
@@ -62,7 +65,7 @@ class AppStrings{
   static const profile = "Profile";
   static const inviteFriends = "Invite other friends to this app";
   static const notifications = "Notifications";
-  static const theme= "Theme";
+  static const theme = "Theme";
   static const security = "Security";
   static const twoFactorAuth = "Two Factor Authentication";
   static const fullName = "Full Name";
@@ -71,18 +74,11 @@ class AppStrings{
   static const changeProfilePicture = "Change Profile Picture";
   static const successfullyUpdated = "Successfully Updated";
   static const successfullyAdded = "Successfully Added";
-
+  static const uploadDone = "Successfully Uploaded";
 
   static const fieldMissing = "One of the field is empty";
   static const passwordDoNotMatch = "Password do not match";
   static const unAuthorized = "UnAuthorized";
 
-
-
   static const user = "User";
-
-
-
-
-
 }
