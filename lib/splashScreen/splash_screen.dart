@@ -43,11 +43,9 @@ class _SplashScreenState extends State<SplashScreen> {
             AppNavigation.navigateReplacement(context, const HomeScreen());
           }
         });
-      }
-      else if(user == null || !user.emailVerified){
+      } else if (user == null || !user.emailVerified) {
         AppNavigation.navigateReplacement(context, const LogInRegisterScreen());
-      }
-      else {
+      } else {
         AppNavigation.navigateReplacement(context, const LogInRegisterScreen());
       }
     });

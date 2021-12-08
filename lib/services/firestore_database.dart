@@ -64,19 +64,16 @@ class DatabaseService {
     String? password,
     String? category,
   }) async {
-    final response = await userCollection.doc(uid).collection('accounts').add(
-      {
-        "fullname": fullName,
-        "domain": domain,
-        "email": email,
-        "password": password,
-        "category": category,
-      }
-    ).then((value) {
+    final response = await userCollection.doc(uid).collection('accounts').add({
+      "fullname": fullName,
+      "domain": domain,
+      "email": email,
+      "password": password,
+      "category": category,
+    }).then((value) {
       Fluttertoast.showToast(msg: AppStrings.successfullyAdded);
     });
-    return response.id;
+    print(response);
+    return response;
   }
-
-
 }

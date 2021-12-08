@@ -682,8 +682,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       return StatefulBuilder(builder: (context, setState) {
                         return GestureDetector(
                           onTap: () {
-                            Provider.of<AccountProvider>(context)
-                                .deleteAccount(index);
+                            Provider.of<AccountProvider>(context, listen: false)
+                                .deleteAccount(index, user!.uid);
                             Navigator.pop(context);
                           },
                           child: AlertDialog(

@@ -32,7 +32,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String? selectedCategory,iconString;
+  String? selectedCategory, iconString;
 
   List<Icon> icons = const [
     Icon(Icons.wifi_tethering, size: 18, color: Colors.white),
@@ -42,7 +42,6 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
   int? selIndex;
-
 
   @override
   void initState() {
@@ -56,14 +55,18 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
     var userProvider = Provider.of<UserProvider>(context, listen: true);
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
-      backgroundColor: _themeChanger.getTheme() == ThemeMode.dark?Colors.black:AppColors.scaffoldColor,
+      backgroundColor: _themeChanger.getTheme() == ThemeMode.dark
+          ? Colors.black
+          : AppColors.scaffoldColor,
       appBar: AppBar(
         centerTitle: true,
         title: CustomText(
           title: AppStrings.addAccountScreen,
           fontWeight: FontWeight.w900,
           fontSize: 16,
-          textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+          textColor: _themeChanger.getTheme() == ThemeMode.dark
+              ? AppColors.scaffoldColor
+              : Colors.black,
         ),
         leading: IconButton(
           onPressed: () {
@@ -71,7 +74,9 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
           },
           icon: Icon(
             Icons.arrow_back_ios,
-            color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.blueButtonColor,
+            color: _themeChanger.getTheme() == ThemeMode.dark
+                ? AppColors.scaffoldColor
+                : AppColors.blueButtonColor,
             size: 20,
           ),
         ),
@@ -93,14 +98,17 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                         decoration: DottedDecoration(
                           dash: const [8],
                           shape: Shape.circle,
-                          color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.blueButtonColor,
+                          color: _themeChanger.getTheme() == ThemeMode.dark
+                              ? AppColors.scaffoldColor
+                              : AppColors.blueButtonColor,
                         ),
                         child: IconButton(
-                          onPressed: () {
-                          },
-                          icon:  FaIcon(
+                          onPressed: () {},
+                          icon: FaIcon(
                             FontAwesomeIcons.image,
-                            color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.blueButtonColor,
+                            color: _themeChanger.getTheme() == ThemeMode.dark
+                                ? AppColors.scaffoldColor
+                                : AppColors.blueButtonColor,
                             size: 20,
                           ),
                         ),
@@ -114,7 +122,9 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                         title: AppStrings.changeIcon,
                         fontWeight: FontWeight.w900,
                         fontSize: 14,
-                        textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.blueButtonColor,
+                        textColor: _themeChanger.getTheme() == ThemeMode.dark
+                            ? AppColors.scaffoldColor
+                            : AppColors.blueButtonColor,
                       ),
                     ),
                     const SizedBox(
@@ -124,7 +134,9 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       title: AppStrings.fullName,
                       fontWeight: FontWeight.w900,
                       fontSize: 12,
-                      textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                      textColor: _themeChanger.getTheme() == ThemeMode.dark
+                          ? AppColors.scaffoldColor
+                          : Colors.black,
                     ),
                     const SizedBox(
                       height: 10,
@@ -132,11 +144,15 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                     CustomTextField(
                       controller: fullNameController,
                       hintText: "Norton Film",
-                      fillColor: _themeChanger.getTheme() == ThemeMode.dark?Colors.black:AppColors.scaffoldColor,
+                      fillColor: _themeChanger.getTheme() == ThemeMode.dark
+                          ? Colors.black
+                          : AppColors.scaffoldColor,
                       prefixIcon: Icon(
                         CupertinoIcons.person,
                         size: 20,
-                        color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                        color: _themeChanger.getTheme() == ThemeMode.dark
+                            ? AppColors.scaffoldColor
+                            : Colors.black,
                       ),
                       enableBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -150,7 +166,9 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       title: AppStrings.website,
                       fontWeight: FontWeight.w900,
                       fontSize: 12,
-                      textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                      textColor: _themeChanger.getTheme() == ThemeMode.dark
+                          ? AppColors.scaffoldColor
+                          : Colors.black,
                     ),
                     const SizedBox(
                       height: 10,
@@ -158,11 +176,15 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                     CustomTextField(
                       controller: domainController,
                       hintText: "www.sitegoeshere.co.id",
-                      fillColor: _themeChanger.getTheme() == ThemeMode.dark?Colors.black:AppColors.scaffoldColor,
+                      fillColor: _themeChanger.getTheme() == ThemeMode.dark
+                          ? Colors.black
+                          : AppColors.scaffoldColor,
                       prefixIcon: Icon(
                         CupertinoIcons.globe,
                         size: 20,
-                        color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                        color: _themeChanger.getTheme() == ThemeMode.dark
+                            ? AppColors.scaffoldColor
+                            : Colors.black,
                       ),
                       enableBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -176,7 +198,9 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       title: AppStrings.emailAddress,
                       fontWeight: FontWeight.w900,
                       fontSize: 12,
-                      textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                      textColor: _themeChanger.getTheme() == ThemeMode.dark
+                          ? AppColors.scaffoldColor
+                          : Colors.black,
                     ),
                     const SizedBox(
                       height: 10,
@@ -186,10 +210,14 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       prefixIcon: Icon(
                         Icons.email_outlined,
                         size: 20,
-                        color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                        color: _themeChanger.getTheme() == ThemeMode.dark
+                            ? AppColors.scaffoldColor
+                            : Colors.black,
                       ),
                       hintText: "annisahy@gmail.com",
-                      fillColor: _themeChanger.getTheme() == ThemeMode.dark?Colors.black:AppColors.scaffoldColor,
+                      fillColor: _themeChanger.getTheme() == ThemeMode.dark
+                          ? Colors.black
+                          : AppColors.scaffoldColor,
                       enableBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
@@ -202,21 +230,27 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       title: AppStrings.password,
                       fontWeight: FontWeight.w900,
                       fontSize: 12,
-                      textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                      textColor: _themeChanger.getTheme() == ThemeMode.dark
+                          ? AppColors.scaffoldColor
+                          : Colors.black,
                     ),
                     const SizedBox(
                       height: 10,
                     ),
                     CustomTextField(
                       controller: passwordController,
-                      prefixIcon:  Icon(
+                      prefixIcon: Icon(
                         Icons.lock_outline,
                         size: 20,
-                        color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
+                        color: _themeChanger.getTheme() == ThemeMode.dark
+                            ? AppColors.scaffoldColor
+                            : Colors.black,
                       ),
                       obscureText: true,
                       hintText: "•••••••••••••",
-                      fillColor: _themeChanger.getTheme() == ThemeMode.dark?Colors.black:AppColors.scaffoldColor,
+                      fillColor: _themeChanger.getTheme() == ThemeMode.dark
+                          ? Colors.black
+                          : AppColors.scaffoldColor,
                       enableBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
@@ -286,18 +320,27 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                     borderRadius: BorderRadius.circular(10),
                     width: 100.w,
                     onPressed: () {
-                      if(domainController.text.isEmpty || emailController.text.isEmpty || passwordController.text.isEmpty || selectedCategory!.isEmpty ){
+                      if (domainController.text.isEmpty ||
+                          emailController.text.isEmpty ||
+                          passwordController.text.isEmpty ||
+                          selectedCategory!.isEmpty) {
                         Fluttertoast.showToast(msg: AppStrings.fieldMissing);
-                      }
-                      else{
-                        if(!FirebaseAuth.instance.currentUser!.emailVerified){
+                      } else {
+                        if (!FirebaseAuth.instance.currentUser!.emailVerified) {
                           Fluttertoast.showToast(msg: AppStrings.unAuthorized);
-                        }
-                        else{
-                          DatabaseService(FirebaseAuth.instance.currentUser?.uid).addAccountData(domain: domainController.text, category: selectedCategory , email: emailController.text, password: passwordController.text,fullName: fullNameController.text.isEmpty?userProvider.user?.fullName:fullNameController.text);
+                        } else {
+                          Provider.of<AccountProvider>(context, listen: false)
+                              .addAccounts(
+                                  domain: domainController.text,
+                                  category: selectedCategory,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  fullName: fullNameController.text.isEmpty
+                                      ? userProvider.user?.fullName
+                                      : fullNameController.text,
+                                  uid: FirebaseAuth.instance.currentUser?.uid);
                           AppNavigation.navigatorPop(context);
                         }
-
                       }
 
                       //AppNavigation.navigatorPop(context);
