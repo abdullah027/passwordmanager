@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class DatabaseService {
   //uid shows null??
+  //has garbage value
   final String? uid;
 
   DatabaseService(this.uid);
