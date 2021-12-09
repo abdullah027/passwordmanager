@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -6,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
+import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -48,10 +50,10 @@ class DatabaseService {
         .doc(uid)
         .collection('accounts')
         .get();
-    docRef.docs.forEach((element) {
+    for (var element in docRef.docs) {
       print(element.id);
       data.add(element.id);
-    });
+    }
     await userCollection
         .doc(uid)
         .collection('accounts')
@@ -91,13 +93,12 @@ class DatabaseService {
     final response =
         await uploadPicture.then((task) => task.ref.getDownloadURL());
 
-    print(response);
-    setProfileUrl(response, userID);
+    setProfileUrl(profilePhoto: response, uid: userID);
     return response.toString();
   }
 
-  void setProfileUrl(String profilePhoto, String uid) async {
-    final response = await userCollection.doc(uid).set({
+  void setProfileUrl({String? profilePhoto, String? uid}) async {
+    await userCollection.doc(uid).set({
       "image": profilePhoto,
     }, SetOptions(merge: true)).then((value) {
       Fluttertoast.showToast(msg: AppStrings.uploadDone);

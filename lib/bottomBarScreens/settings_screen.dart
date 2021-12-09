@@ -91,9 +91,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ]),
                 child: ListTile(
-                  leading: Image.asset(
-                    AssetPaths.profile,
-                    height: 40,
+                  leading:  userProvider.user?.image != null
+                      ? CircleAvatar(
+                    maxRadius: 20,
+                    backgroundImage: NetworkImage(
+                        userProvider.user!.image!),
+                    backgroundColor: AppColors.scaffoldColor,
+                  )
+                      : const CircleAvatar(
+                    maxRadius: 20,
+                    backgroundImage: AssetImage(
+                      AssetPaths.profile,
+                    ),
+                    backgroundColor: AppColors.scaffoldColor,
+
                   ),
                   title: CustomText(
                     title: (userProvider.user?.fullName ?? userProvider.user?.email)??"Daniel Braun",

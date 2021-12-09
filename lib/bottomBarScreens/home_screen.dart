@@ -363,6 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _customAppBar() {
+    var userProvider = Provider.of<UserProvider>(context, listen: true);
     return Container(
       color: Colors.transparent,
       child: Row(
@@ -380,11 +381,19 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               AppNavigation.navigateTo(context, const ProfileScreen());
             },
-            child: const CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.black,
-              foregroundImage: AssetImage(AssetPaths.profile),
-            ),
+            child: userProvider.user?.image != null
+                ? CircleAvatar(
+                    maxRadius: 30,
+                    backgroundImage: NetworkImage(userProvider.user!.image!),
+                    backgroundColor: AppColors.scaffoldColor,
+                  )
+                : const CircleAvatar(
+                    maxRadius: 30,
+                    backgroundImage: AssetImage(
+                      AssetPaths.profile,
+                    ),
+                    backgroundColor: AppColors.scaffoldColor,
+                  ),
           ),
         ],
       ),
@@ -425,10 +434,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ]),
                       child: ListTile(
-                        leading: Image.asset(
-                          AssetPaths.profile,
-                          height: 40,
-                        ),
+                        leading: userProvider.user?.image != null
+                            ? CircleAvatar(
+                                maxRadius: 24,
+                                backgroundImage:
+                                    NetworkImage(userProvider.user!.image!),
+                                backgroundColor: AppColors.scaffoldColor,
+                              )
+                            : const CircleAvatar(
+                                maxRadius: 24,
+                                backgroundImage: AssetImage(
+                                  AssetPaths.profile,
+                                ),
+                                backgroundColor: AppColors.scaffoldColor,
+                              ),
                         title: CustomText(
                           title:
                               userProvider.user?.fullName ?? "Annisa Handayani",

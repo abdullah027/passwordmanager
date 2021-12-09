@@ -7,7 +7,7 @@ import '../firestore_database.dart';
 
 class UserProvider extends ChangeNotifier {
   Users? _user;
-  String? _profileimagePath;
+  String? _profileImagePath;
 
   Users? get user => _user;
 
@@ -17,13 +17,13 @@ class UserProvider extends ChangeNotifier {
   }
 
   String? get profileImage {
-    return _profileimagePath;
+    return _profileImagePath;
   }
 
   void setProfilePic(File chosenImage, String uid) async {
-    _profileimagePath =
-        await DatabaseService(_user!.id).uploadProfilePic(chosenImage, uid);
-    _user!.image = _profileimagePath;
+    _profileImagePath =
+        await DatabaseService(_user?.id).uploadProfilePic(chosenImage, uid);
+    _user?.image = _profileImagePath;
     notifyListeners();
   }
 

@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController phoneController = TextEditingController();
   File? _chosenFile;
 
-  //call initialize valueson page load
+  //call initialize values on page load
   @override
   void didChangeDependencies() {
     initValues();
@@ -115,16 +115,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Stack(
                             children: [
-                              CircleAvatar(
-                                maxRadius: 45,
-                                backgroundColor: AppColors.scaffoldColor,
-                                child: userProvider.user!.image != null
-                                    ? Image.network(userProvider.user!.image!)
-                                    : Image.asset(
+                              userProvider.user!.image != null
+                                  ? CircleAvatar(
+                                      maxRadius: 45,
+                                      backgroundImage: NetworkImage(
+                                          userProvider.user!.image!),
+                                      backgroundColor: AppColors.scaffoldColor,
+                                    )
+                                  : const CircleAvatar(
+                                      maxRadius: 45,
+                                      backgroundImage: AssetImage(
                                         AssetPaths.profile,
-                                        height: 80,
                                       ),
-                              ),
+                                      backgroundColor: AppColors.scaffoldColor,
+
+                                    ),
                               Positioned(
                                 bottom: 10,
                                 right: 0,
@@ -135,19 +140,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: AppColors.scaffoldColor,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: IconButton(
-                                    constraints: const BoxConstraints(
-                                      maxWidth: 16,
-                                      maxHeight: 16,
-                                      minHeight: 14,
-                                      minWidth: 14,
-                                    ),
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.solidEdit,
-                                      color: AppColors.blueButtonColor,
-                                      size: 16,
-                                    ),
-                                    onPressed: () async {
+                                  child: GestureDetector(
+                                    onTap: () async {
                                       final chosenImage =
                                           await ImagePicker().pickImage(
                                         source: ImageSource.gallery,
@@ -155,8 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       setState(() {
                                         _chosenFile = File(chosenImage!.path);
                                       });
-                                      Provider.of<UserProvider>(context,
-                                              listen: false)
+                                      userProvider
                                           .setProfilePic(
                                               _chosenFile!,
                                               FirebaseAuth
@@ -164,6 +157,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                       print('Pressed');
                                     },
+                                    child: const FaIcon(
+                                      FontAwesomeIcons.solidEdit,
+                                      color: AppColors.blueButtonColor,
+                                      size: 16,
+                                    ),
                                   ),
                                 ),
                               )
