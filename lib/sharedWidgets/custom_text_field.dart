@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 
 class CustomTextField extends StatefulWidget {
-  final String? hintText,labelText;
+  final String? hintText;
   final TextEditingController? controller;
   final TextInputType? inputType;
   final TextAlign? textAlign;
@@ -17,7 +17,7 @@ class CustomTextField extends StatefulWidget {
   final Icon? prefixIcon;
   final Widget? suffixIcon;
   final BorderSide? borderSide;
-  const CustomTextField({Key? key,this.hintText,this.labelText,this.controller,this.inputType,this.textAlign,this.obscureText,this.fillColor,this.enableBorder,this.prefixIcon,this.enabled,this.borderSide,this.suffixIcon,this.onPressed}) : super(key: key);
+  const CustomTextField({Key? key,this.hintText,this.controller,this.inputType,this.textAlign,this.obscureText,this.fillColor,this.enableBorder,this.prefixIcon,this.enabled,this.borderSide,this.suffixIcon,this.onPressed}) : super(key: key);
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -49,9 +49,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
           filled: true,
           fillColor: widget.fillColor??AppColors.fillColor,
-          labelText: widget.labelText,
-          labelStyle: TextStyle(
-              color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black.withOpacity(0.55), fontSize: 10),
           hintStyle: TextStyle(
               color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black.withOpacity(0.55), fontSize: 10),
           hintText: widget.hintText,

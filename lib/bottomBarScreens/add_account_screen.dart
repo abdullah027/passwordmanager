@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +12,6 @@ import 'package:passwordmanager/sharedWidgets/custom_text_field.dart';
 import 'package:passwordmanager/sharedWidgets/my_category_card.dart';
 import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
-import 'package:passwordmanager/utilis/encrypt_decrypt.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:passwordmanager/utilis/them_changer.dart';
 import 'package:provider/provider.dart';
@@ -45,9 +42,6 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
   int? selIndex;
-
-
-
 
   @override
   void initState() {
@@ -329,19 +323,18 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                       if (domainController.text.isEmpty ||
                           emailController.text.isEmpty ||
                           passwordController.text.isEmpty ||
-                          selectedCategory == null) {
+                          selectedCategory!.isEmpty) {
                         Fluttertoast.showToast(msg: AppStrings.fieldMissing);
                       } else {
                         if (!FirebaseAuth.instance.currentUser!.emailVerified) {
                           Fluttertoast.showToast(msg: AppStrings.unAuthorized);
                         } else {
-                          final message = utf8.encode(passwordController.text);
                           Provider.of<AccountProvider>(context, listen: false)
                               .addAccounts(
                                   domain: domainController.text,
                                   category: selectedCategory,
                                   email: emailController.text,
-                                  password: encrypt(passwordController.text),
+                                  password: passwordController.text,
                                   fullName: fullNameController.text.isEmpty
                                       ? userProvider.user?.fullName
                                       : fullNameController.text,
@@ -361,5 +354,4 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
       ),
     );
   }
-
 }

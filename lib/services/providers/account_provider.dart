@@ -6,22 +6,22 @@ import 'package:passwordmanager/utilis/text_const.dart';
 import '../firestore_database.dart';
 
 class AccountProvider extends ChangeNotifier {
-  Accounts? _account;
+  Accounts? _user;
   List<Accounts> _accounts = [];
 
-  Accounts? get account => _account;
+  Accounts? get user => _user;
 
   List<Accounts> get accounts {
     return _accounts;
   }
 
-  void setAccount(Accounts? account) {
-    _account = account;
+  void setUser(Accounts? user) {
+    _user = user;
     notifyListeners();
   }
 
   void restUserProvider() {
-    _account = null;
+    _user = null;
     notifyListeners();
   }
 

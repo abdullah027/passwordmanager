@@ -9,10 +9,8 @@ class AppStrings {
       "You can save personal or work passwords here securely";
   static const getStarted = "Get Started";
   static const letsSavePasswords = "Lets Save Passwords";
-  static const passwordResetEmail = "Password reset link has been sent to your email";
   static const logIn = "Login";
   static const newPw = "New";
-  static const oldPw = "Old";
   static const signUp = "Sign Up";
   static const search = "Search";
   static const resetPassword = "Reset Password";
@@ -24,7 +22,7 @@ class AppStrings {
       "Welcome in Reganam. Lets save passwords for remembrance.";
   static const welcomeBack = "Welcome back";
   static const newPasswordText =
-      "Reset your password";
+      "Reset your password for recovery & login to your account.";
   static const welcomeText2 =
       "Welcome in Reganam. Lets generate new strong passwords.";
   static const emailInfo = "Enter your email address to recover your account";
@@ -46,7 +44,6 @@ class AppStrings {
   static const confirm = "Confirm";
   static const home = "Home";
   static const generatePassword = "Generate Password";
-  static const accountDetails = "Account Details";
   static const rateApp = "Rate the app";
   static const settings = "Settings";
   static const logout = "Log Out";
