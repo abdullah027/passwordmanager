@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/authScreens/otp_screen.dart';
+import 'package:passwordmanager/services/firebase_auth.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text_field.dart';
@@ -76,19 +79,19 @@ class _ForGotPasswordScreenState extends State<ForGotPasswordScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                        },
-                        child: Container(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                          child: CustomText(
-                            title: AppStrings.tryAnotherWays,
-                            fontSize: 12,
-                            textColor: AppColors.blueButtonColor,
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //   },
+                      //   child: Container(
+                      //     padding:
+                      //     const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                      //     child: CustomText(
+                      //       title: AppStrings.tryAnotherWays,
+                      //       fontSize: 12,
+                      //       textColor: AppColors.blueButtonColor,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -98,7 +101,16 @@ class _ForGotPasswordScreenState extends State<ForGotPasswordScreen> {
                 child: CustomBlueButton(
                   borderRadius: BorderRadius.circular(10),
                   onPressed: () {
-                    AppNavigation.navigateReplacement(context, const OtpScreen());
+                    if(emailController.text.isEmpty){
+                      Fluttertoast.showToast(msg: AppStrings.enterYourEmail);
+                    }
+                    else{
+                      //AppNavigation.navigateReplacement(context, const OtpScreen());
+                      AuthenticationService(FirebaseAuth.instance).resetPassword(emailController.text, context);
+
+                    }
+
+
                   },
                   text: AppStrings.resetPassword,
                   width: 100.w,

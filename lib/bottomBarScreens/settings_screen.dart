@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:passwordmanager/authScreens/new_password_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/SettingsScreens/profile_screen.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
@@ -12,6 +13,7 @@ import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:passwordmanager/utilis/them_changer.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sizer/sizer.dart';
 
 import 'add_account_screen.dart';
@@ -157,17 +159,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const SizedBox(height: 10,),
                     ListTile(
+                      onTap: (){
+                        Share.share("Check out my application");
+                      },
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.person_outline,color: AppColors.blueButtonColor,size: 20,),
                       title: CustomText(title: AppStrings.inviteFriends,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
                       trailing: Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
                     ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.notifications_none_outlined,color: AppColors.blueButtonColor,size: 20),
-                      title: CustomText(title: AppStrings.notifications,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
-                      trailing: Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
-                    ),
+                    // ListTile(
+                    //   contentPadding: EdgeInsets.zero,
+                    //   leading: const Icon(Icons.notifications_none_outlined,color: AppColors.blueButtonColor,size: 20),
+                    //   title: CustomText(title: AppStrings.notifications,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
+                    //   trailing: Icon(Icons.arrow_forward_ios_rounded,size: 16,color: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,),
+                    // ),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.wb_sunny_outlined,color: AppColors.blueButtonColor,size: 20),
@@ -222,6 +227,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const SizedBox(height: 10,),
                     ListTile(
+                      onTap: (){
+                        AppNavigation.navigateTo(context, const NewPasswordScreen());
+                      },
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(Icons.lock,color: AppColors.blueButtonColor,size: 20,),
                       title: CustomText(title: AppStrings.password,fontSize: 12,fontWeight: FontWeight.w600,textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:AppColors.scaffoldColor2,),

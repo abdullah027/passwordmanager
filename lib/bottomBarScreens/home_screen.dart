@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:passwordmanager/Models/account_model.dart';
 import 'package:passwordmanager/authScreens/verification_screen.dart';
+import 'package:passwordmanager/bottomBarScreens/AccountDetailsScreen/account_details.dart';
 import 'package:passwordmanager/bottomBarScreens/SettingsScreens/profile_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/add_account_screen.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
@@ -43,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
       .collection('accounts');
 
   int selIndex = 0;
+  int selAccount = 0;
   bool? isSelected = false;
 
   List titles = [
@@ -671,84 +673,96 @@ class _HomeScreenState extends State<HomeScreen> {
               offset: const Offset(10, 24),
             )
           ]),
-      child: Column(
-        children: [
-          ListTile(
-            leading: Image.asset(
-              AssetPaths.profile,
-              height: 40,
-            ),
-            title: CustomText(
-              title: data.isEmpty ? 'Suara Musik' : data[index].fullName,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              textColor: _themeChanger.getTheme() == ThemeMode.dark
-                  ? AppColors.scaffoldColor
-                  : Colors.black,
-            ),
-            subtitle: CustomText(
-              title: data.isEmpty ? 'annisahy@gmail.com' : data[index].email,
-              fontSize: 12,
-              textColor: _themeChanger.getTheme() == ThemeMode.dark
-                  ? AppColors.scaffoldColor
-                  : Colors.black,
-            ),
-            trailing: IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return StatefulBuilder(builder: (context, setState) {
-                        return GestureDetector(
-                          onTap: () {
-                            Provider.of<AccountProvider>(context, listen: false)
-                                .deleteAccount(index, user!.uid);
-                            Navigator.pop(context);
-                          },
-                          child: AlertDialog(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
-                            content: CustomText(
-                              title: "Delete",
-                            ),
-                          ),
-                        );
-                      });
-                    });
-              },
-              icon: Icon(
-                Icons.more_vert,
-                color: _themeChanger.getTheme() == ThemeMode.dark
-                    ? AppColors.scaffoldColor
-                    : AppColors.handleColor,
+      child: GestureDetector(
+        onTap: (){
+          setState(() {
+            selIndex = index;
+          });
+          accountProvider.setAccount(data[selIndex]);
+          AppNavigation.navigateTo(context, AccountDetailsScreen());
+        },
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              ListTile(
+                leading: Image.asset(
+                  AssetPaths.profile,
+                  height: 40,
+                ),
+                title: CustomText(
+                  title: data.isEmpty ? 'Suara Musik' : data[index].fullName,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  textColor: _themeChanger.getTheme() == ThemeMode.dark
+                      ? AppColors.scaffoldColor
+                      : Colors.black,
+                ),
+                subtitle: CustomText(
+                  title: data.isEmpty ? 'annisahy@gmail.com' : data[index].email,
+                  fontSize: 12,
+                  textColor: _themeChanger.getTheme() == ThemeMode.dark
+                      ? AppColors.scaffoldColor
+                      : Colors.black,
+                ),
+                trailing: IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(builder: (context, setState) {
+                            return GestureDetector(
+                              onTap: () {
+                                Provider.of<AccountProvider>(context, listen: false)
+                                    .deleteAccount(index, user!.uid);
+                                Navigator.pop(context);
+                              },
+                              child: AlertDialog(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 20, horizontal: 20),
+                                content: CustomText(
+                                  title: "Delete",
+                                ),
+                              ),
+                            );
+                          });
+                        });
+                  },
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: _themeChanger.getTheme() == ThemeMode.dark
+                        ? AppColors.scaffoldColor
+                        : AppColors.handleColor,
+                  ),
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 75),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CustomText(
-                  title: '•••••••••••••',
-                  fontSize: 8,
-                  textColor: AppColors.handleColor,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 75),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      title: '•••••••••••••',
+                      fontSize: 8,
+                      textColor: AppColors.handleColor,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Icon(
+                      Icons.remove_red_eye_outlined,
+                      size: 14,
+                      color: AppColors.handleColor,
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
-                const Icon(
-                  Icons.remove_red_eye_outlined,
-                  size: 14,
-                  color: AppColors.handleColor,
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+        ),
       ),
     );
   }

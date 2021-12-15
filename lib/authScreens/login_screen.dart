@@ -5,6 +5,7 @@ import 'package:passwordmanager/authScreens/forgot_password_screen.dart';
 import 'package:passwordmanager/authScreens/sign_up_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
+import 'package:passwordmanager/services/google_sign_in.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text_field.dart';
@@ -12,6 +13,7 @@ import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/asset_paths.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -31,7 +33,7 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   void initState() {
     emailController.text = 'mal9627.ma@gmail.com';
-    passwordController.text = 'Chef!1234';
+    passwordController.text = 'Waiter!4321';
     super.initState();
   }
   @override
@@ -160,15 +162,21 @@ class _LogInScreenState extends State<LogInScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 1.5,color: AppColors.borderColor),
-                      ),
-                      child: Image.asset(AssetPaths.google,height: 15,),),
+                  GestureDetector(
+                    onTap: (){
+                      final googleSignInProvider = Provider.of<GoogleSignInProvider>(context,listen:false);
+                      googleSignInProvider.googleLogIn(context);
+                    },
+                    child: Container(
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(width: 1.5,color: AppColors.borderColor),
+                        ),
+                        child: Image.asset(AssetPaths.google,height: 15,),),
+                  ),
                   const SizedBox(
                     width: 5,
                   ),
