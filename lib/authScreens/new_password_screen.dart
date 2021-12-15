@@ -19,6 +19,7 @@ class NewPasswordScreen extends StatefulWidget {
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController retypePasswordController = TextEditingController();
+  TextEditingController oldPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,17 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       height: 20,
                     ),
                     CustomTextField(
+                      labelText: AppStrings.oldPw + AppStrings.password,
+                      controller: oldPasswordController,
+                      hintText: AppStrings.oldPw + AppStrings.password,
+                      inputType: TextInputType.visiblePassword,
+                      obscureText: true,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextField(
+                      labelText: AppStrings.newPw + AppStrings.password,
                       controller: newPasswordController,
                       hintText: AppStrings.newPw + AppStrings.password,
                       inputType: TextInputType.visiblePassword,
@@ -64,6 +76,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     CustomTextField(
                       controller: retypePasswordController,
                       hintText: AppStrings.retypePassword,
+                      labelText: AppStrings.retypePassword,
                       obscureText: true,
                       textAlign: TextAlign.justify,
                       inputType: TextInputType.visiblePassword,

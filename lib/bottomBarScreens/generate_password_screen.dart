@@ -70,7 +70,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
         ),
         leading: IconButton(
           onPressed: () {
-            AppNavigation.navigatorPop(context);
+            AppNavigation.navigateTo(context, const AddAccountScreen());
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -268,8 +268,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
 
   String generatePassword(
       {bool? normal = true, bool? strong = false, bool? veryStrong = false}) {
-    final random = Random();
-    var length = 6;
+    var length = 12;
     const lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
     const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const numbers = '0123456789';
@@ -288,46 +287,51 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
 
   Widget genField() {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
-    return Container(
-        width: 100.w,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: _themeChanger.getTheme() == ThemeMode.dark
-                  ? AppColors.scaffoldColor
-                  : Colors.transparent,
-              width: _themeChanger.getTheme() == ThemeMode.dark ? 1 : 0,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadowColor.withOpacity(0.21),
-                blurRadius: 54,
-                offset: const Offset(2, 2),
-              ),
-            ]),
-        child: CustomTextField(
-          controller: _controller,
-          fillColor: _themeChanger.getTheme() == ThemeMode.dark
-              ? Colors.black
-              : AppColors.scaffoldColor,
-          enabled: false,
-          borderSide: BorderSide.none,
-          suffixIcon: IconButton(
-            onPressed: () {
-              setState(() {
-                print("woow");
-                FlutterClipboard.copy(_controller.text);
-                Fluttertoast.showToast(msg: "Copied to Clipboard");
-              });
-            },
-            icon: Icon(
-              Icons.copy,
-              color: _themeChanger.getTheme() == ThemeMode.dark
-                  ? AppColors.scaffoldColor
-                  : Colors.black,
-            ),
+    return Stack(
+      alignment: Alignment.centerRight,
+      children: [
+        Container(
+            width: 100.w,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _themeChanger.getTheme() == ThemeMode.dark
+                      ? AppColors.scaffoldColor
+                      : Colors.transparent,
+                  width: _themeChanger.getTheme() == ThemeMode.dark ? 1 : 0,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadowColor.withOpacity(0.21),
+                    blurRadius: 54,
+                    offset: const Offset(2, 2),
+                  ),
+                ]),
+            child: CustomTextField(
+              controller: _controller,
+              fillColor: _themeChanger.getTheme() == ThemeMode.dark
+                  ? Colors.black
+                  : AppColors.scaffoldColor,
+              enabled: false,
+              borderSide: BorderSide.none,
+            )),
+        IconButton(
+          onPressed: () {
+            setState(() {
+              print("woow");
+              FlutterClipboard.copy(_controller.text);
+              Fluttertoast.showToast(msg: "Copied to Clipboard");
+            });
+          },
+          icon: Icon(
+            Icons.copy,
+            color: _themeChanger.getTheme() == ThemeMode.dark
+                ? AppColors.scaffoldColor
+                : Colors.black,
           ),
-        ));
+        ),
+      ],
+    );
   }
 }

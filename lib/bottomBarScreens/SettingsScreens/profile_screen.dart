@@ -51,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     phoneController.text = userData.user!.phone!;
   }
 
-  bool _switchValue = false;
+  //bool _switchValue = false;
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context, listen: true);
@@ -142,12 +142,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   child: GestureDetector(
                                     onTap: () async {
-                                      final chosenImage =
-                                          await ImagePicker().pickImage(
-                                        source: ImageSource.gallery,
-                                      );
+                                      PickFile pickFile =  PickFile();
+                                      File? returnedFile = await pickFile.getImage();
                                       setState(() {
-                                        _chosenFile = File(chosenImage!.path);
+                                        _chosenFile = returnedFile;
                                       });
                                       userProvider
                                           .setProfilePic(
@@ -298,44 +296,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          CustomText(
-                            title: AppStrings.notifications,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 12,
-                            textColor:
-                                _themeChanger.getTheme() == ThemeMode.dark
-                                    ? AppColors.scaffoldColor
-                                    : Colors.black,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                title: AppStrings.app,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                                textColor:
-                                    _themeChanger.getTheme() == ThemeMode.dark
-                                        ? AppColors.scaffoldColor
-                                        : AppColors.appColor,
-                              ),
-                              Transform.scale(
-                                scale: 0.5,
-                                child: CupertinoSwitch(
-                                  activeColor: AppColors.blueButtonColor,
-                                  value: _switchValue,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      _switchValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                          // CustomText(
+                          //   title: AppStrings.notifications,
+                          //   fontWeight: FontWeight.w900,
+                          //   fontSize: 12,
+                          //   textColor:
+                          //       _themeChanger.getTheme() == ThemeMode.dark
+                          //           ? AppColors.scaffoldColor
+                          //           : Colors.black,
+                          // ),
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     CustomText(
+                          //       title: AppStrings.app,
+                          //       fontWeight: FontWeight.w500,
+                          //       fontSize: 12,
+                          //       textColor:
+                          //           _themeChanger.getTheme() == ThemeMode.dark
+                          //               ? AppColors.scaffoldColor
+                          //               : AppColors.appColor,
+                          //     ),
+                          //     Transform.scale(
+                          //       scale: 0.5,
+                          //       child: CupertinoSwitch(
+                          //         activeColor: AppColors.blueButtonColor,
+                          //         value: _switchValue,
+                          //         onChanged: (bool value) {
+                          //           setState(() {
+                          //             _switchValue = value;
+                          //           });
+                          //         },
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),

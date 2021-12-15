@@ -38,6 +38,8 @@ class AuthenticationService {
   Future<void> signOut(context) async {
     try {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
+      var accountProvider = Provider.of<AccountProvider>(context, listen: false);
+      accountProvider.restUserProvider();
       userProvider.restUserProvider();
       await firebaseAuth.signOut().then((value) => {
             AppNavigation.navigateReplacement(context, const LogInScreen()),
@@ -116,6 +118,17 @@ class AuthenticationService {
           toastLength: Toast.LENGTH_LONG);
     }
     throw "";
+  }
+
+  Future resetPassword (String email, context) async{
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email).then((value) {
+        AppNavigation.navigateReplacement(context, const LogInScreen());
+        Fluttertoast.showToast(msg: AppStrings.passwordResetEmail);
+      });
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: e.message.toString());
+    }
   }
 
   Future updateUser(fullName, email, phone, context) async {
