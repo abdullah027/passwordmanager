@@ -8,7 +8,8 @@ class PickFile {
 
     ImagePicker filePicker = ImagePicker();
 
-    final pickedFile = await filePicker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await filePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50, maxHeight: 500);
 
     if (pickedFile != null) {
       file = File(pickedFile.path);
