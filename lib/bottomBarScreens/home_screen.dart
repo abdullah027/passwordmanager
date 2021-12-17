@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Icons.settings
   ];
 
-  List icons = const [
+  List iconsData = const [
     Icon(Icons.wifi_tethering, size: 18, color: Colors.white),
     Icon(Icons.language, size: 18, color: Colors.white),
     Icon(Icons.school_outlined, size: 18, color: Colors.white),
@@ -232,13 +232,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               physics: const BouncingScrollPhysics(),
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
-                              itemCount: icons.length,
+                              itemCount: iconsData.length,
                               itemBuilder: (context, index) {
                                 return Row(
                                   children: [
                                     MyCategoryCard(
                                       text: categories[index],
-                                      icon: icons[index],
+                                      icon: iconsData[index],
                                       index: index,
                                     ),
                                     const SizedBox(
@@ -651,7 +651,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _listTile(List<Accounts> data, int index) {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     var accountProvider = Provider.of<AccountProvider>(context, listen: true);
-    // print(data[index].category.toString() + '+++++++++++');
+    print(data[index].category.toString() + '+++++++++++');
     // print(data[index].domain.toString() + '+++++++++++');
     return Container(
       decoration: BoxDecoration(
@@ -685,7 +685,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               ListTile(
-                leading: icons[data[index].category!],
+                leading: data[index].category != null
+                    ? iconsData[data[index].category]
+                    : Image.asset('assets/images/profile.png'),
                 title: CustomText(
                   title: data.isEmpty ? 'Suara Musik' : data[index].fullName,
                   fontSize: 14,
