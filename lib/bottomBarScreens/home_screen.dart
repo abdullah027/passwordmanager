@@ -68,6 +68,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Icon(Icons.school_outlined, size: 18, color: Colors.white),
     Icon(Icons.account_balance_wallet_outlined, size: 18, color: Colors.white),
   ];
+
+  List<Icon> catIcons = const [
+    Icon(Icons.wifi_tethering, size: 18, color: Colors.red),
+    Icon(Icons.language, size: 18, color: Colors.blue),
+    Icon(Icons.school_outlined, size: 18, color: Colors.green),
+    Icon(Icons.account_balance_wallet_outlined, size: 18, color: Colors.yellow),
+  ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
 
   // Future<List<Object?>> getAccounts() async {
@@ -686,7 +693,10 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               ListTile(
                 leading: data[index].category != null
-                    ? iconsData[data[index].category]
+                    ? Icon(
+                        catIcons[data[index].category!].icon,
+                        color: catIcons[data[index].category!].color,
+                      )
                     : Image.asset('assets/images/profile.png'),
                 title: CustomText(
                   title: data.isEmpty ? 'Suara Musik' : data[index].fullName,
