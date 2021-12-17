@@ -35,7 +35,8 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String? selectedCategory, iconString;
+  int? selectedCategory;
+  String? iconString;
 
   List<Icon> icons = const [
     Icon(Icons.wifi_tethering, size: 18, color: Colors.white),
@@ -45,9 +46,6 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
   int? selIndex;
-
-
-
 
   @override
   void initState() {
@@ -289,7 +287,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                                   returnIndex: (catchIndex) {
                                     setState(() {
                                       selIndex = catchIndex;
-                                      selectedCategory = categories[index];
+                                      selectedCategory = index;
                                     });
                                   },
                                 ),
@@ -361,5 +359,4 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
       ),
     );
   }
-
 }

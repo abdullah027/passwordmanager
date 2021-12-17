@@ -24,10 +24,7 @@ import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../services/providers/account_provider.dart';
 
-
-
 class AccountDetailsScreen extends StatefulWidget {
-
   @override
   _AccountDetailsScreenState createState() => _AccountDetailsScreenState();
 }
@@ -60,7 +57,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
     fullNameController.text = accountProvider.account!.fullName!;
     emailController.text = accountProvider.account!.email!;
     domainController.text = accountProvider.account!.domain!;
-    passwordController.text = decrypt(accountProvider.account!.password!)! ;
+    passwordController.text = decrypt(accountProvider.account!.password!)!;
   }
 
   @override
@@ -301,7 +298,8 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                             return Row(
                               children: [
                                 MyCategoryCard(
-                                  text: accountProvider.account?.category ??
+                                  text: accountProvider.account?.category
+                                          .toString() ??
                                       'Not specified',
                                   //icon: accountProvider.account?.category != categories[index]?Icon(Icons.non):,
                                   index: index,

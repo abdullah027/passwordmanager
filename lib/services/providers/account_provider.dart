@@ -38,7 +38,7 @@ class AccountProvider extends ChangeNotifier {
       String? domain,
       String? email,
       String? password,
-      String? category,
+      int? category,
       String? uid}) {
     DatabaseService(uid)
         .addAccountData(

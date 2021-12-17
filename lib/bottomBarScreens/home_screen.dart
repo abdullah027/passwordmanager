@@ -25,6 +25,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -60,13 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
     Icons.settings
   ];
 
-  List<Icon> icons = const [
-    Icon(
-      Icons.wifi_tethering,
-      size: 18,
-      color: Colors.white,
-    ),
-    Icon(CupertinoIcons.globe, size: 18, color: Colors.white),
+  List icons = const [
+    Icon(Icons.wifi_tethering, size: 18, color: Colors.white),
+    Icon(Icons.language, size: 18, color: Colors.white),
     Icon(Icons.school_outlined, size: 18, color: Colors.white),
     Icon(Icons.account_balance_wallet_outlined, size: 18, color: Colors.white),
   ];
@@ -653,7 +651,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _listTile(List<Accounts> data, int index) {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     var accountProvider = Provider.of<AccountProvider>(context, listen: true);
-
+    // print(data[index].category.toString() + '+++++++++++');
+    // print(data[index].domain.toString() + '+++++++++++');
     return Container(
       decoration: BoxDecoration(
           color: _themeChanger.getTheme() == ThemeMode.dark
@@ -674,7 +673,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ]),
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           setState(() {
             selIndex = index;
           });
@@ -686,10 +685,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               ListTile(
-                leading: Image.asset(
-                  AssetPaths.profile,
-                  height: 40,
-                ),
+                leading: icons[data[index].category!],
                 title: CustomText(
                   title: data.isEmpty ? 'Suara Musik' : data[index].fullName,
                   fontSize: 14,
@@ -699,7 +695,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       : Colors.black,
                 ),
                 subtitle: CustomText(
-                  title: data.isEmpty ? 'annisahy@gmail.com' : data[index].email,
+                  title:
+                      data.isEmpty ? 'annisahy@gmail.com' : data[index].email,
                   fontSize: 12,
                   textColor: _themeChanger.getTheme() == ThemeMode.dark
                       ? AppColors.scaffoldColor
@@ -713,7 +710,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           return StatefulBuilder(builder: (context, setState) {
                             return GestureDetector(
                               onTap: () {
-                                Provider.of<AccountProvider>(context, listen: false)
+                                Provider.of<AccountProvider>(context,
+                                        listen: false)
                                     .deleteAccount(index, user!.uid);
                                 Navigator.pop(context);
                               },

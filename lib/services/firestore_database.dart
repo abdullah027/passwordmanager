@@ -69,7 +69,7 @@ class DatabaseService {
     String? domain,
     String? email,
     String? password,
-    String? category,
+    int? category,
   }) async {
     final response = await userCollection.doc(uid).collection('accounts').add({
       "fullname": fullName,
