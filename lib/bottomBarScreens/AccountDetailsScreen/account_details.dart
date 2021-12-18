@@ -42,6 +42,12 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
     Icon(Icons.school_outlined, size: 18, color: Colors.white),
     Icon(Icons.account_balance_wallet_outlined, size: 18, color: Colors.white),
   ];
+  List<Icon> catIcons = const [
+    Icon(Icons.wifi_tethering, size: 16, color: Colors.white),
+    Icon(Icons.language, size: 16, color: Colors.white),
+    Icon(Icons.school_outlined, size: 16, color: Colors.white),
+    Icon(Icons.account_balance_wallet_outlined, size: 16, color: Colors.white),
+  ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
   int? selIndex;
   bool isSelected = true;
@@ -108,32 +114,32 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: DottedDecoration(
-                          dash: const [8],
-                          shape: Shape.circle,
-                          color: _themeChanger.getTheme() == ThemeMode.dark
-                              ? AppColors.scaffoldColor
-                              : AppColors.blueButtonColor,
-                        ),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: FaIcon(
-                            FontAwesomeIcons.image,
-                            color: _themeChanger.getTheme() == ThemeMode.dark
-                                ? AppColors.scaffoldColor
-                                : AppColors.blueButtonColor,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    // Center(
+                    //   child: Container(
+                    //     height: 60,
+                    //     width: 60,
+                    //     decoration: DottedDecoration(
+                    //       dash: const [8],
+                    //       shape: Shape.circle,
+                    //       color: _themeChanger.getTheme() == ThemeMode.dark
+                    //           ? AppColors.scaffoldColor
+                    //           : AppColors.blueButtonColor,
+                    //     ),
+                    //     child: IconButton(
+                    //       onPressed: () {},
+                    //       icon: FaIcon(
+                    //         FontAwesomeIcons.image,
+                    //         color: _themeChanger.getTheme() == ThemeMode.dark
+                    //             ? AppColors.scaffoldColor
+                    //             : AppColors.blueButtonColor,
+                    //         size: 20,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 30,
+                    // ),
                     CustomText(
                       title: AppStrings.fullName,
                       fontWeight: FontWeight.w900,
@@ -298,11 +304,18 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                             return Row(
                               children: [
                                 MyCategoryCard(
-                                  text: accountProvider.account?.category
-                                          .toString() ??
+                                  text: accountProvider.account?.category == 0?categories[0]:accountProvider.account?.category == 1?categories[1]:accountProvider.account?.category == 2?categories[2]:accountProvider.account?.category == 3?categories[3]:
                                       'Not specified',
                                   //icon: accountProvider.account?.category != categories[index]?Icon(Icons.non):,
                                   index: index,
+                                  icon: Icon(
+                                    catIcons[accountProvider.account!.category!]
+                                        .icon,
+                                    color: catIcons[
+                                            accountProvider.account!.category!]
+                                        .color,
+                                    size: 18,
+                                  ),
                                   isSelected: index == selIndex ? true : false,
                                   returnIndex: (catchIndex) {
                                     setState(() {

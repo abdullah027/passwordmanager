@@ -70,10 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List<Icon> catIcons = const [
-    Icon(Icons.wifi_tethering, size: 18, color: Colors.red),
-    Icon(Icons.language, size: 18, color: Colors.blue),
-    Icon(Icons.school_outlined, size: 18, color: Colors.green),
-    Icon(Icons.account_balance_wallet_outlined, size: 18, color: Colors.yellow),
+    Icon(Icons.wifi_tethering, size: 16, color: Colors.white),
+    Icon(Icons.language, size: 16, color: Colors.white),
+    Icon(Icons.school_outlined, size: 16, color: Colors.white),
+    Icon(Icons.account_balance_wallet_outlined, size: 16, color: Colors.white),
   ];
   List categories = ["Social Media", "Google", "Study", "Wallet"];
 
@@ -658,8 +658,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _listTile(List<Accounts> data, int index) {
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     var accountProvider = Provider.of<AccountProvider>(context, listen: true);
-    print(data[index].category.toString() + '+++++++++++');
-    // print(data[index].domain.toString() + '+++++++++++');
     return Container(
       decoration: BoxDecoration(
           color: _themeChanger.getTheme() == ThemeMode.dark
@@ -692,12 +690,28 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               ListTile(
-                leading: data[index].category != null
-                    ? Icon(
-                        catIcons[data[index].category!].icon,
-                        color: catIcons[data[index].category!].color,
+                leading: data.isNotEmpty
+                    ? Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                            color: data[index].category == 0
+                                ? AppColors.container1Color
+                                : data[index].category == 1
+                                    ? AppColors.container2Color
+                                    : data[index].category == 2
+                                        ? AppColors.container3Color
+                                        : AppColors.container4Color,
+                            shape: BoxShape.circle),
+                        child: Icon(
+                          catIcons[data[index].category!].icon,
+                          color: catIcons[data[index].category!].color,
+                          size: 18,
+                        ),
                       )
-                    : Image.asset('assets/images/profile.png'),
+                    : Image.asset(
+                        'assets/images/profile.png',
+                        height: 45,
+                      ),
                 title: CustomText(
                   title: data.isEmpty ? 'Suara Musik' : data[index].fullName,
                   fontSize: 14,
