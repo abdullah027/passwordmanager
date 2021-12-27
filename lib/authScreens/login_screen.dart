@@ -33,7 +33,7 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   void initState() {
     emailController.text = 'mal9627.ma@gmail.com';
-    passwordController.text = 'Waiter!4321';
+    passwordController.text = 'Waiter!1234';
     super.initState();
   }
   @override
@@ -159,41 +159,23 @@ class _LogInScreenState extends State<LogInScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      final googleSignInProvider = Provider.of<GoogleSignInProvider>(context,listen:false);
-                      googleSignInProvider.googleLogIn(context);
-                    },
-                    child: Container(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(width: 1.5,color: AppColors.borderColor),
-                        ),
-                        child: Image.asset(AssetPaths.google,height: 15,),),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 1.5,color: AppColors.borderColor),
-                      ),
-                      child: const FaIcon(
-                        FontAwesomeIcons.facebookF,
-                        size: 18,
-                        color: Colors.blue,
-                      ))
-                ],
+              GestureDetector(
+                onTap: (){
+                  final googleSignInProvider = Provider.of<GoogleSignInProvider>(context,listen:false);
+                  googleSignInProvider.googleLogIn(context);
+                },
+                child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(width: 1.5,color: AppColors.borderColor),
+                    ),
+                    child: Image.asset(AssetPaths.google,height: 18,),),
+              ),
+              const SizedBox(
+                width: 5,
               ),
               const SizedBox(
                 height: 20,

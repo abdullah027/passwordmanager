@@ -1,14 +1,7 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encrypt/encrypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:passwordmanager/Models/account_model.dart';
-import 'package:passwordmanager/services/firestore_database.dart';
-import 'package:passwordmanager/services/providers/user_provider.dart';
+import 'package:passwordmanager/bottomBarScreens/password_detail_screen.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text_field.dart';
@@ -20,11 +13,10 @@ import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:passwordmanager/utilis/them_changer.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:dotted_decoration/dotted_decoration.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../services/providers/account_provider.dart';
 
 class AccountDetailsScreen extends StatefulWidget {
+
   @override
   _AccountDetailsScreenState createState() => _AccountDetailsScreenState();
 }
@@ -346,7 +338,9 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                     text: AppStrings.checkPasswordDetails,
                     color: AppColors.greenColor,
                     borderRadius: BorderRadius.circular(10),
-                    onPressed: () {},
+                    onPressed: () {
+                      AppNavigation.navigateTo(context, const PasswordDetailScreen());
+                    },
                     width: 100.w,
                   ),
                 ],

@@ -95,45 +95,45 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: DottedDecoration(
-                          dash: const [8],
-                          shape: Shape.circle,
-                          color: _themeChanger.getTheme() == ThemeMode.dark
-                              ? AppColors.scaffoldColor
-                              : AppColors.blueButtonColor,
-                        ),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: FaIcon(
-                            FontAwesomeIcons.image,
-                            color: _themeChanger.getTheme() == ThemeMode.dark
-                                ? AppColors.scaffoldColor
-                                : AppColors.blueButtonColor,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Center(
-                      child: CustomText(
-                        title: AppStrings.changeIcon,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 14,
-                        textColor: _themeChanger.getTheme() == ThemeMode.dark
-                            ? AppColors.scaffoldColor
-                            : AppColors.blueButtonColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    // Center(
+                    //   child: Container(
+                    //     height: 60,
+                    //     width: 60,
+                    //     decoration: DottedDecoration(
+                    //       dash: const [8],
+                    //       shape: Shape.circle,
+                    //       color: _themeChanger.getTheme() == ThemeMode.dark
+                    //           ? AppColors.scaffoldColor
+                    //           : AppColors.blueButtonColor,
+                    //     ),
+                    //     child: IconButton(
+                    //       onPressed: () {},
+                    //       icon: FaIcon(
+                    //         FontAwesomeIcons.image,
+                    //         color: _themeChanger.getTheme() == ThemeMode.dark
+                    //             ? AppColors.scaffoldColor
+                    //             : AppColors.blueButtonColor,
+                    //         size: 20,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Center(
+                    //   child: CustomText(
+                    //     title: AppStrings.changeIcon,
+                    //     fontWeight: FontWeight.w900,
+                    //     fontSize: 14,
+                    //     textColor: _themeChanger.getTheme() == ThemeMode.dark
+                    //         ? AppColors.scaffoldColor
+                    //         : AppColors.blueButtonColor,
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 20,
+                    // ),
                     CustomText(
                       title: AppStrings.fullName,
                       fontWeight: FontWeight.w900,

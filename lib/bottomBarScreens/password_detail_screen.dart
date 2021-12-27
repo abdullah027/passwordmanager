@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:password_strength/password_strength.dart';
+import 'package:passwordmanager/services/providers/account_provider.dart';
 import 'package:passwordmanager/sharedWidgets/bottom_navigation_bar.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
 import 'package:passwordmanager/utilis/app_navigation.dart';
 import 'package:passwordmanager/utilis/asset_paths.dart';
 import 'package:passwordmanager/utilis/color_const.dart';
+import 'package:passwordmanager/utilis/encrypt_decrypt.dart';
 import 'package:passwordmanager/utilis/text_const.dart';
 import 'package:passwordmanager/utilis/them_changer.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +22,14 @@ class PasswordDetailScreen extends StatefulWidget {
 }
 
 class _PasswordDetailScreenState extends State<PasswordDetailScreen> {
+
+
+
   @override
   Widget build(BuildContext context) {
+    var accountProvider = Provider.of<AccountProvider>(context, listen: true);
+    double strength = estimatePasswordStrength(accountProvider.account?.password == null ?'passwordManager':decrypt(accountProvider.account?.password).toString());
+    print(strength);
     ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -79,7 +88,7 @@ class _PasswordDetailScreenState extends State<PasswordDetailScreen> {
                 child: SleekCircularSlider(
                   max: 100,
                   min: 0,
-                  initialValue: 50,
+                  initialValue: strength * 100,
                   appearance: CircularSliderAppearance(
                     infoProperties: InfoProperties(
                       mainLabelStyle: const TextStyle(
@@ -140,7 +149,7 @@ class _PasswordDetailScreenState extends State<PasswordDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  title: "22",
+                                  title: ((100 - strength * 100)*1.1).toInt().toString(),
                                   fontWeight: FontWeight.w800,
                                   fontSize: 16,
                                   textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
@@ -178,7 +187,7 @@ class _PasswordDetailScreenState extends State<PasswordDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  title: "89",
+                                  title: (100 - strength * 100).toInt().toString(),
                                   fontWeight: FontWeight.w800,
                                   fontSize: 16,
                                   textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
@@ -223,7 +232,7 @@ class _PasswordDetailScreenState extends State<PasswordDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  title: "116",
+                                  title: (((100 - strength * 100))*1.04).toInt().toString(),
                                   fontWeight: FontWeight.w800,
                                   fontSize: 16,
                                   textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
@@ -261,7 +270,7 @@ class _PasswordDetailScreenState extends State<PasswordDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  title: "219",
+                                  title: (strength * 100).toInt().toString(),
                                   fontWeight: FontWeight.w800,
                                   fontSize: 16,
                                   textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,
@@ -312,7 +321,7 @@ class _PasswordDetailScreenState extends State<PasswordDetailScreen> {
                         height: 40,
                       ),
                       title: CustomText(
-                        title: "annisahy@gmail.com",
+                        title: accountProvider.account?.email??"annisahy@gmail.com",
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         textColor: _themeChanger.getTheme() == ThemeMode.dark?AppColors.scaffoldColor:Colors.black,

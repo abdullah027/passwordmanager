@@ -1,8 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/Models/account_model.dart';
-import 'package:passwordmanager/utilis/text_const.dart';
-
 import '../firestore_database.dart';
 
 class AccountProvider extends ChangeNotifier {

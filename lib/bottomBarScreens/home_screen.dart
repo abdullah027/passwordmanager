@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:passwordmanager/Models/account_model.dart';
 import 'package:passwordmanager/authScreens/verification_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/AccountDetailsScreen/account_details.dart';
+import 'package:passwordmanager/bottomBarScreens/CategoryAccountScreen/category_account_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/SettingsScreens/profile_screen.dart';
 import 'package:passwordmanager/bottomBarScreens/add_account_screen.dart';
 import 'package:passwordmanager/services/firebase_auth.dart';
-import 'package:passwordmanager/services/firestore_database.dart';
 import 'package:passwordmanager/services/providers/account_provider.dart';
-// import 'package:passwordmanager/services/providers/account_provider.dart';
 import 'package:passwordmanager/services/providers/user_provider.dart';
 import 'package:passwordmanager/sharedWidgets/bottom_navigation_bar.dart';
 import 'package:passwordmanager/sharedWidgets/custom_text.dart';
@@ -45,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('accounts');
 
-  int selIndex = 0;
+  int? selIndex;
+  String? selCatAccount;
   int selAccount = 0;
   bool? isSelected = false;
 
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? Colors.black
                     : AppColors.scaffoldColor,
                 controller: panelController,
-                minHeight: 35.h,
+                minHeight: 40.h,
                 maxHeight: 70.h,
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(20),
@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? Colors.black
                       : AppColors.scaffoldColor,
                   controller: panel2Controller,
-                  minHeight: 70.h,
+                  minHeight: 75.h,
                   maxHeight: 80.h,
                   borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
@@ -178,18 +178,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                          Row(
-                            children: [
-                              _searchField(),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              _filterButton(),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     _searchField(),
+                          //     const SizedBox(
+                          //       width: 10,
+                          //     ),
+                          //     _filterButton(),
+                          //     const SizedBox(
+                          //       width: 10,
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),
@@ -243,10 +243,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemBuilder: (context, index) {
                                 return Row(
                                   children: [
-                                    MyCategoryCard(
-                                      text: categories[index],
-                                      icon: iconsData[index],
-                                      index: index,
+                                    GestureDetector(
+                                      // onTap: () {
+                                      //   AppNavigation.navigateTo(context,
+                                      //       const CategoryAccountDetailsScreen());
+                                      // },
+                                      child: MyCategoryCard(
+                                        text: categories[index],
+                                        icon: iconsData[index],
+                                        index: index,
+                                        isSelected: index == selIndex ? true : false,
+                                        returnIndex: (catchIndex) {
+                                          selIndex = index;
+                                          AppNavigation.navigateTo(context, CategoryAccountDetailsScreen(category: selIndex,));
+                                          setState(() {
+                                          });
+                                        },
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 20,
@@ -282,8 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 setState(() {
                                   panelController.isPanelOpen
                                       ? panelController.close()
-                                      : panelController.open();
-                                });
+                                      : panelController.open();});
                               },
                               child: Center(
                                   child: Container(
@@ -682,7 +694,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             selIndex = index;
           });
-          accountProvider.setAccount(data[selIndex]);
+          accountProvider.setAccount(data[selIndex!]);
           AppNavigation.navigateTo(context, AccountDetailsScreen());
         },
         child: Container(

@@ -47,6 +47,7 @@ class AppStrings {
   static const home = "Home";
   static const generatePassword = "Generate Password";
   static const accountDetails = "Account Details";
+  static const categoryAccountDetails = "Category Account Details";
   static const rateApp = "Rate the app";
   static const settings = "Settings";
   static const logout = "Log Out";

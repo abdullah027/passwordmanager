@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:passwordmanager/bottomBarScreens/home_screen.dart';
 import 'package:passwordmanager/sharedWidgets/custom_blue_button.dart';
 import 'package:passwordmanager/sharedWidgets/custom_rich_text.dart';
@@ -21,10 +24,23 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   TextEditingController retypePasswordController = TextEditingController();
   TextEditingController oldPasswordController = TextEditingController();
 
+  bool isSelected = true;
+  bool isSelected1 = true;
+  bool isSelected2 = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              AppNavigation.navigatorPop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.blueButtonColor,
+            )),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(
@@ -58,7 +74,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       controller: oldPasswordController,
                       hintText: AppStrings.oldPw + AppStrings.password,
                       inputType: TextInputType.visiblePassword,
-                      obscureText: true,
+                      obscureText: isSelected,
+                      suffixIcon: isSelected == false?const Icon(CupertinoIcons.eye):const Icon(CupertinoIcons.eye_slash),
+                      onPressed: (){
+                        setState(() {
+                          isSelected = !isSelected;
+                        });
+                      },
                     ),
                     const SizedBox(
                       height: 10,
@@ -68,7 +90,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       controller: newPasswordController,
                       hintText: AppStrings.newPw + AppStrings.password,
                       inputType: TextInputType.visiblePassword,
-                      obscureText: true,
+                      obscureText: isSelected1,
+                      suffixIcon: isSelected1 == false?const Icon(CupertinoIcons.eye):const Icon(CupertinoIcons.eye_slash),
+                      onPressed: (){
+                        setState(() {
+                          isSelected1 = !isSelected1;
+                        });
+                      },
                     ),
                     const SizedBox(
                       height: 10,
@@ -77,7 +105,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       controller: retypePasswordController,
                       hintText: AppStrings.retypePassword,
                       labelText: AppStrings.retypePassword,
-                      obscureText: true,
+                      obscureText: isSelected2,
+                      suffixIcon: isSelected2 == false?const Icon(CupertinoIcons.eye):const Icon(CupertinoIcons.eye_slash),
+                      onPressed: (){
+                        setState(() {
+                          isSelected2 = !isSelected2;
+                        });
+                      },
                       textAlign: TextAlign.justify,
                       inputType: TextInputType.visiblePassword,
                     ),
@@ -89,7 +123,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               flex: 0,
               child: CustomBlueButton(
                 onPressed: () {
-                  AppNavigation.navigateReplacement(context, HomeScreen());
+                  if (newPasswordController.text !=
+                      retypePasswordController.text) {
+                    Fluttertoast.showToast(msg: AppStrings.passwordDoNotMatch);
+                  } else {
+                    _changePassword(oldPasswordController.text,
+                        retypePasswordController.text);
+                  }
                 },
                 width: 100.w,
                 text: AppStrings.confirm,
@@ -100,5 +140,20 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         ),
       ),
     );
+  }
+
+  void _changePassword(String currentPassword, String newPassword) async {
+    final user = await FirebaseAuth.instance.currentUser;
+    final cred = EmailAuthProvider.credential(
+        email: user!.email!, password: currentPassword);
+
+    user.reauthenticateWithCredential(cred).then((value) {
+      user.updatePassword(newPassword).then((_) {
+        Fluttertoast.showToast(msg: AppStrings.successfullyUpdated);
+        AppNavigation.navigateReplacement(context, HomeScreen());
+      }).catchError((error) {
+        Fluttertoast.showToast(msg: error);
+      });
+    }).catchError((err) {});
   }
 }
